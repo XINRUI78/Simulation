@@ -52,7 +52,7 @@ backward_pvalue <- function(data, response, p_threshold) {
       # If there is a predictor to remove with p-value > threshold
       if (max_pval > p_threshold) {
         worst_predictor <- names(which.max(p_values))
-        current_formula <- as.formula(paste(response, "~", paste(setdiff(all.vars(formula(model)), worst_predictor), collapse = " + ")))
+        current_formula <- as.formula(paste(response, "~", paste(setdiff(predictors, worst_predictor), collapse = " + ")))
         model <- glm(current_formula, data = data, family = binomial)
         predictors <- setdiff(predictors, worst_predictor)
         removed <- TRUE
