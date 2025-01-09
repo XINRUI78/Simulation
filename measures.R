@@ -17,9 +17,9 @@ measures <- function(yval, p_val){
   
   # Brier score
   brier <- mean((p_val - yval)^2)
+
+  # Root mean square prediction error (RMSPE)
+  rmspe <- sqrt(mean((p_val - yval)^2))
   
-  # Mean absolute predictive error (MAPE)
-  MAPE <- mean(abs(p_val - yval))
-  
-  return(c(cal_slope, cal_large, auc, brier, MAPE))
+  return(c(cal_slope, cal_large, auc, brier, rmspe))
 }
