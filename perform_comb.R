@@ -1,3 +1,36 @@
+# Set simulation parameters
+n.para <- 30
+prev <- 0.3
+c <- 0.8
+ndev <- 2000
+nval <- 10000
+
+percentage <- c(0.1, 0.3, 0.3, 0.3)
+
+# Define relative strengths
+strong <- percentage[1] * n.para  # 10% strong predictive variables
+medium <- percentage[2] * n.para  # 30% medium predictive variables
+weak <- percentage[3] * n.para    # 30% weak predictive variables
+noise <- percentage[4] * n.para   # 30% noise predictive variables
+
+# Assign relative strengths
+weights <- c(rep(1, strong), 
+             rep(0.5, medium), 
+             rep(0.25, weak), 
+             rep(0, noise))
+
+opt_beta <- opt_beta(n.para, prev, c, weights)
+beta0 <- opt_beta$beta0
+beta <- opt_beta$beta1
+
+result <- perform_comb(ndev, n.para, beta0, beta, nval)
+
+# Convert the matrix to a data frame
+summary <- as.data.frame(result)
+
+##########################################################
+# function of model performance of method combination
+
 perform_comb <- function(ndev, n.para, beta0, beta, nval){
   
   # Generate a large dataset (200,000) using function generate_ss
