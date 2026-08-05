@@ -1,6 +1,8 @@
 # generate a dataset (predictors from independent standard normal distributions)
+library(stats)
+library(mvtnorm)
 generate_ss <- function(n, n.para, beta0, beta){
-  x <- mvtnorm::rmvnorm(n, mean = rep(0, n.para), sigma = diag(n.para))
+  x <- rmvnorm(n, mean = rep(0, n.para), sigma = diag(n.para))
   eta <- rep(beta0, n) + x%*%beta
   p <- 1/(1+exp(-eta))
   y <- rbinom(n, 1, p)
