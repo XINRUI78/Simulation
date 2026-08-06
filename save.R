@@ -12,44 +12,50 @@ source("method/stepwise.R")
 source("method/unilogit.R")
 source("method/unirank.R")
 
-args <- commandArgs(trailingOnly = TRUE)
+library(doParallel)
+library(foreach)
 
-task_id <- as.integer(args[1])
+task <- as.integer(commandArgs(trailingOnly = TRUE)[1])
 
-# Associate each task with one sample size
-sample_sizes <- c(
-  ndev,
-  ndev1,
-  ndev2
-)
+sample_sizes <- c(ndev, ndev1, ndev2)
+sample_size <- sample_sizes[task]
 
-sample_size <- sample_sizes[task_id]
+ncores <- as.integer(Sys.getenv("NSLOTS"))
 
-# Run the simulation
-result <- perform_s3(
-  sample_size,
-  n.para,
-  n.true,
-  beta0,
-  beta,
-  nval
-)
+cl <- makeCluster(ncores)
+registerDoParallel(cl)
 
-# Create a results directory
-dir.create(
-  "results",
-  showWarnings = FALSE,
-  recursive = TRUE
-)
+dir.create("results", showWarnings = FALSE)
 
-# Give each task a separate output filename
-output_file <- file.path(
-  "results",
-  paste0("result_sample_size_", sample_size, ".rds")
-)
+results <- foreach(
+  i = 1:1000,
+  .combine = rbind,
+  .packages = c(
+    "glmnet",
+    "pROC",
+    "mvtnorm"
+  )
+) %dopar% {
 
-# Save the result
+  perform_s3(
+    i = i,
+    ndev = sample_size,
+    n.para = n.para,
+    n.true = n.true,
+    beta0 = beta0,
+    beta = beta,
+    nval = nval
+  )
+
+}
+
+stopCluster(cl)
+
 saveRDS(
-  result,
-  file = output_file
+  results,
+  file = paste0(
+    "results/result_n_",
+    sample_size,
+    ".rds"
+  )
 )
