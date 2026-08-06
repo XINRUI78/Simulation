@@ -2,6 +2,7 @@
 source("tool/generate_ss_s3.R")
 source("tool/perform_s3.R")
 source("tool/measures.R")
+source("tool/run_s3.R")
 source("method/back_logit.R")
 source("method/backward_pvalue.R")
 source("method/berank.R")
