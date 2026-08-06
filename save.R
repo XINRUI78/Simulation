@@ -11,21 +11,22 @@ source("method/stepwise.R")
 source("method/unilogit.R")
 source("method/unirank.R")
 
-# Run simulation for ndev
-result_n <- perform_s3(
+args <- commandArgs(trailingOnly = TRUE)
+
+task_id <- as.integer(args[1])
+
+# Associate each task with one sample size
+sample_sizes <- c(
   ndev,
-  n.para,
-  n.true,
-  beta0,
-  beta,
-  nval
-)
-
-saveRDS(result_n, "result_n.rds")
-
-# Run simulation for ndev1
-result_n_2 <- perform_s3(
   ndev1,
+  ndev2
+)
+
+sample_size <- sample_sizes[task_id]
+
+# Run the simulation
+result <- perform_s3(
+  sample_size,
   n.para,
   n.true,
   beta0,
@@ -33,16 +34,21 @@ result_n_2 <- perform_s3(
   nval
 )
 
-saveRDS(result_n_2, "result_n_2.rds")
-
-# Run simulation for ndev2
-result_n_4 <- perform_s3(
-  ndev2,
-  n.para,
-  n.true,
-  beta0,
-  beta,
-  nval
+# Create a results directory
+dir.create(
+  "results",
+  showWarnings = FALSE,
+  recursive = TRUE
 )
 
-saveRDS(result_n_4, "result_n_4.rds")
+# Give each task a separate output filename
+output_file <- file.path(
+  "results",
+  paste0("result_sample_size_", sample_size, ".rds")
+)
+
+# Save the result
+saveRDS(
+  result,
+  file = output_file
+)
