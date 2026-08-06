@@ -79,6 +79,6 @@ opt_beta_s3 <- function(n.para, n.true, prev, c, weights) {
 opt_beta <- opt_beta_s3(n.para, n.true, prev, c, weights)
 beta0 <- opt_beta$beta0
 beta <- opt_beta$beta1
-result_n <-perform_s3(ndev, n.para, beta0, beta, nval)
-result_n_2 <-perform_s3(ndev1, n.para, beta0, beta, nval)
-result_n_4 <-perform_s3(ndev2, n.para, beta0, beta, nval)
+result_n <-perform_s3(ndev, n.para, n.true, beta0, beta, nval)
+result_n_2 <-perform_s3(ndev1, n.para, n.true, beta0, beta, nval)
+result_n_4 <-perform_s3(ndev2, n.para, n.true, beta0, beta, nval)
