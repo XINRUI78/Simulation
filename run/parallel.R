@@ -21,7 +21,7 @@ perform <- function(ndev, n.para, beta0, beta, nval){
   
   # create a matrix for each method
   n.loop <- 1000 # first try 5 loops to check the code, then 100
-  results <- foreach(i = 1: n.loop, .combine = rbind, .packages = c("glmnet", "pROC", "stats", "randomForest"), .export = c("generate_ss", 
+  results <- foreach(i = 1: n.loop, .combine = rbind, .packages = c("glmnet", "pROC", "stats"), .export = c("generate_ss", 
                                                                                                           "measures", "back_logit", "backward_pvalue", "mod_penal_ave_foreach", "unilogit", "unirank", "berank", "lasso_exact")) %dopar% {
                                                                                                             source("unirank.R")
                                                                                                             source("berank.R")                
@@ -42,7 +42,7 @@ perform <- function(ndev, n.para, beta0, beta, nval){
                                                                                                      
                                                                                                      # Model fitting
                                                                                                      # Initialize matrices for the different methods for this iteration
-                                                                                                     method_result <- matrix(NA, nrow = 19, ncol = 10 + n.para)  # 13 methods
+                                                                                                     method_result <- matrix(NA, nrow = 17, ncol = 10 + n.para)  # 13 methods
                                                                                                      
                                                                                                      # method = 0 for full model
                                                                                                      fit <- glm(y ~ ., data = data.dev, family = 'binomial')
@@ -201,26 +201,7 @@ perform <- function(ndev, n.para, beta0, beta, nval){
                                                                                                      lasso_p <- lasso_exact$lasso_p
                                                                                                      method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), varsel_lasso, lambda)
                                                                                                      
-                                                                                                     # method = 17 for random forest
-                                                                                                     library(randomForest)
-                                                                                                     rf_model <- randomForest(x = x, y = as.factor(y), ntree = 500)
-                                                                                                     rf_pred_prob <- predict(rf_model, xval, type = "prob")[,2]  # Get probability for class 1
-                                                                                                     method_result[18, ] <- c(prev, auc, ndev, 17, measures(yval, rf_pred_prob), rep(1, n.para), NA)
-                                                                                                     
-                                                                                                     # method = 18 for random forest with top 15 features 
-                                                                                                     
-                                                                                                     # Select the top 15 most important features
-                                                                                                     rf_var_importance <- importance(rf_model)[, 1]  # Get importance scores
-                                                                                                     top_15_vars <- names(sort(rf_var_importance, decreasing = TRUE))[1:min(15, length(rf_var_importance))]
-                                                                                                     rf_varsel_top15 <- rep(0, n.para)
-                                                                                                     rf_varsel_top15[match(top_15_vars, colnames(x))] <- 1  # Mark selected variables as 1
-                                                                                                     
-                                                                                                     # Subset data to only include the selected top 15 features
-                                                                                                     x_top15 <- x[, top_15_vars]
-                                                                                                     xval_top15 <- xval[, top_15_vars]
-                                                                                                     rf_top15 <- randomForest(x = x_top15, y = as.factor(y), ntree = 500)
-                                                                                                     rf_pred_prob_top15 <- predict(rf_top15, xval_top15, type = "prob")[,2]  # Get probability for class 1
-                                                                                                     method_result[19, ] <- c(prev, auc, ndev, 18, measures(yval, rf_pred_prob_top15), rf_varsel_top15, NA)
+                                                                                              
                                                                                                      
                                                                                                      return(method_result)
                                                                                                    }
@@ -427,22 +408,7 @@ allperform <- function(ndev, n.para, beta0, beta, nval){
                                                                                                      uni_eta <- as.matrix(cbind(1,xval[,varsel_uni == 1]))%*%coef(unimodel)
                                                                                                      uni_p <- as.vector(1/(1+exp(-uni_eta)))
                                                                                                      method_result[15,] <- c(prev, auc, ndev, 14, measures(yval, uni_p), varsel_uni, NA)
-                                                                                                     
-                                                                                                     # method = 2 for backward elimination ranking with the top 15 predictors
-                                                                                                     berank <- berank(as.matrix(x), y, 15)
-                                                                                                     varsel_be <- berank$varsel_be
-                                                                                                     bemodel <- berank$model
-                                                                                                     be_eta <- as.matrix(cbind(1,xval[,varsel_be == 1]))%*%coef(bemodel)
-                                                                                                     be_p <- as.vector(1/(1+exp(-be_eta)))
-                                                                                                     method_result[16,] <- c(prev, auc, ndev, 15, measures(yval, be_p), varsel_be, NA)
-                                                                                                     
-                                                                                                     # method = 3 for LASSO using lambda.min, method = 8 for LASSO using lambda.1se
-                                                                                                     lasso_exact <- lasso_exact(x, y, 15, max_attempts = 10, initial_nlambda = 100) 
-                                                                                                     varsel_lasso <- lasso_exact$varsel_lasso
-                                                                                                     lassomodel <- lasso_exact$model
-                                                                                                     lambda <- lasso_exact$lambda
-                                                                                                     lasso_p <- as.vector(predict(lassomodel, as.matrix(xval), s = lambda, type="response"))
-                                                                                                     method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), varsel_lasso, lambda)
+                                                                                                 
                                                                                                      
                                                                                                      return(method_result)
                                                                                                    }
