@@ -1,7 +1,7 @@
 library(doParallel)
 library(foreach)
 
-perform_s3 <- function(ndev, n.para, beta0, beta, nval){
+perform_s3 <- function(ndev, n.para, n.true, beta0, beta, nval){
   
   # Register parallel backend with the number of cores available
   n.cores <- parallel::detectCores() - 3  # use one less than total cores to avoid overloading
@@ -11,7 +11,7 @@ perform_s3 <- function(ndev, n.para, beta0, beta, nval){
   # Generate a large dataset (200,000) using function generate_ss
   # Check prevalence and C-statistic; 
   n <- 200000; 
-  data <- generate_ss_s3(n, n.para, beta0, beta)
+  data <- generate_ss_s3(n, n.para, n.true, beta0, beta)
   prev <- round(mean(data[,1]),2)
   X <- as.matrix(data[,-1])
   eta <- rep(beta0, n) + X%*%beta
@@ -29,12 +29,12 @@ perform_s3 <- function(ndev, n.para, beta0, beta, nval){
                                                                                                      set.seed(i)
                                                                                                      
                                                                                                      # generate a development dataset of size ndev=2000
-                                                                                                     data.dev <- generate_ss_s3(ndev, n.para, beta0, beta)
+                                                                                                     data.dev <- generate_ss_s3(ndev, n.para, n.true, beta0, beta)
                                                                                                      x <- data.dev[,-1]
                                                                                                      y <- data.dev[,1]
                                                                                                      
                                                                                                      # generate a validation dataset of size nval
-                                                                                                     data.val <- generate_ss_s3(nval, n.para, beta0, beta)
+                                                                                                     data.val <- generate_ss_s3(nval, n.para, n.true, beta0, beta)
                                                                                                      xval <- data.val[,-1]
                                                                                                      yval <- data.val[,1]
                                                                                                      
