@@ -193,8 +193,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval){
                                                                                                      return(method_result)
                                                                                                    }
   
-  # Stop parallel backend
-  stopCluster(cl)
+
   
   colnames(results) <- c("prevalence", 
                          "anticipated c-stat", 
