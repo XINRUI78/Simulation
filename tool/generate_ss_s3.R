@@ -1,13 +1,13 @@
 library(mvtnorm)
 library(stats)
-generate_ss_s3 <- function(n, n.para, n.true, beta0, beta, rho.true = 0.5, rho.noise = 0.2, rho.cross = 0.1){
+generate_ss_s3 <- function(n, n.para, n.true, beta0, beta, rho){
   sigma <- diag(n.para)
   true.idx <- seq_len(n.true)
   noise.idx <- (n.true + 1):n.para
-  sigma[noise.idx, noise.idx] <- rho.noise
-  sigma[true.idx, noise.idx] <- rho.cross
-  sigma[noise.idx, true.idx] <- rho.cross
-  sigma[true.idx, true.idx] <- rho.true
+  sigma[noise.idx, noise.idx] <- 0
+  sigma[true.idx, noise.idx] <- rho
+  sigma[noise.idx, true.idx] <- rho
+  sigma[true.idx, true.idx] <- rho
   
   # Variances must equal one
   diag(sigma) <- 1
