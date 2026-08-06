@@ -4,7 +4,7 @@ library(foreach)
 perform_s3 <- function(ndev, n.para, n.true, beta0, beta, nval){
   
   # Register parallel backend with the number of cores available
-  n.cores <- parallel::detectCores() - 3  # use one less than total cores to avoid overloading
+  n.cores <- 40  # use one less than total cores to avoid overloading
   cl <- makeCluster(n.cores)
   registerDoParallel(cl)
   
