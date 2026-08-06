@@ -15,47 +15,70 @@ source("method/unirank.R")
 library(doParallel)
 library(foreach)
 
-task <- as.integer(commandArgs(trailingOnly = TRUE)[1])
+# Read number of cores allocated by Myriad
+ncores <- suppressWarnings(
+  as.integer(Sys.getenv("NSLOTS", unset = "1"))
+)
 
-sample_sizes <- c(ndev, ndev1, ndev2)
-sample_size <- sample_sizes[task]
+# Create output directory
+dir.create(
+  "results",
+  recursive = TRUE,
+  showWarnings = FALSE
+)
 
-ncores <- as.integer(Sys.getenv("NSLOTS"))
+# Create parallel cluster
+cl <- parallel::makeCluster(ncores)
+doParallel::registerDoParallel(cl)
 
-cl <- makeCluster(ncores)
-registerDoParallel(cl)
-
-dir.create("results", showWarnings = FALSE)
-
-results <- foreach(
-  i = 1:1000,
+# Run 1,000 repetitions
+result_ndev <- foreach(
+  i = seq_len(1000),
   .combine = rbind,
+  .errorhandling = "pass",
   .packages = c(
-    "glmnet",
+    "mvtnorm",
     "pROC",
-    "mvtnorm"
+    "glmnet"
+  ),
+  .export = c(
+    "perform_s3",
+    "generate_ss_s3",
+    "measures",
+    "opt_beta_s3",
+    "back_logit",
+    "unilogit",
+    "mod_penal_ave_foreach",
+    "unirank",
+    "berank",
+    "lasso_exact"
   )
 ) %dopar% {
 
   perform_s3(
     i = i,
-    ndev = sample_size,
+    ndev = ndev,
     n.para = n.para,
     n.true = n.true,
     beta0 = beta0,
     beta = beta,
     nval = nval
   )
-
 }
 
-stopCluster(cl)
+# Stop parallel cluster
+parallel::stopCluster(cl)
+
+
+# Save result
+output_file <- file.path(
+  "results",
+  paste0("result_ndev_", ndev, "_1000_repetitions.rds")
+)
 
 saveRDS(
-  results,
-  file = paste0(
-    "results/result_n_",
-    sample_size,
-    ".rds"
-  )
+  result_ndev,
+  file = output_file,
+  compress = TRUE
 )
+
