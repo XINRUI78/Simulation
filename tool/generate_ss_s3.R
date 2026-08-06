@@ -1,6 +1,6 @@
 library(mvtnorm)
 library(stats)
-generate_ss_s3 <- function(n, n.para, n.true, beta0, beta, rho){
+generate_ss_s3 <- function(n, n.para, n.true, beta0, beta, rho = 0.5){
   sigma <- diag(n.para)
   true.idx <- seq_len(n.true)
   noise.idx <- (n.true + 1):n.para
