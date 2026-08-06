@@ -1,13 +1,7 @@
 library(doParallel)
 library(foreach)
 
-perform_s3 <- function(ndev, n.para, n.true, beta0, beta, nval){
-  
-  # Register parallel backend with the number of cores available
-  n.cores <- 40  # use one less than total cores to avoid overloading
-  cl <- makeCluster(n.cores)
-  registerDoParallel(cl)
-  
+perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval){
   # Generate a large dataset (200,000) using function generate_ss
   # Check prevalence and C-statistic; 
   n <- 200000; 
@@ -18,14 +12,7 @@ perform_s3 <- function(ndev, n.para, n.true, beta0, beta, nval){
   p <- 1/(1+exp(-eta))
   cstat <- pROC::roc(response = as.numeric(data[,1]), predictor = as.vector(p), levels = c(0, 1), direction = "<")
   auc <- round(as.vector(cstat$auc),2)
-  
-  # create a matrix for each method
-  n.loop <- 1000 # first try 5 loops to check the code, then 100
-  results <- foreach(i = 1: n.loop, .combine = rbind, .packages = c("glmnet", "pROC", "stats"), .export = c("generate_ss_s3", 
-                                                                                                          "measures", "back_logit", "backward_pvalue", "mod_penal_ave_foreach", "unilogit", "unirank", "berank", "lasso_exact")) %dopar% {
-                                                                                                            source("unirank.R")
-                                                                                                            source("berank.R")                
-                                                                                                            source("lasso_exact.R")   
+
                                                                                                      set.seed(i)
                                                                                                      
                                                                                                      # generate a development dataset of size ndev=2000
