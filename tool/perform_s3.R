@@ -191,22 +191,23 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval){
                                                                                               
                                                                                                      
                                                                                                      return(method_result)
-                                                                                                   }
+                                                                                                   
   
 
   
-  colnames(results) <- c("prevalence", 
-                         "anticipated c-stat", 
-                         "ndev", 
-                         "method", 
-                         "calibration slope", 
-                         "calibration in the large", 
-                         "auc", 
-                         "Brier score", 
-                         "rmspe", 
-                         paste0("varsel", 1:n.para),  
-                         "option")
-  
-  return(results)
+  colnames(method_result) <- c(
+    "prevalence",
+    "anticipated c-stat",
+    "ndev",
+    "method",
+    "calibration slope",
+    "calibration in the large",
+    "auc",
+    "Brier score",
+    "rmspe",
+    paste0("varsel", 1:n.para),
+    "option"
+  )
+
+  return(method_result)
 }
-
