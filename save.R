@@ -15,6 +15,7 @@ source("method/unirank.R")
 library(doParallel)
 library(foreach)
 library(RcppNumerical)
+library(brglm2)
 
 
 # Create output directory
