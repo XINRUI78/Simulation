@@ -8,9 +8,9 @@ percentage <- c(0.1, 0.2, 0.2, 0.5)
 
 # Define number of predictors with relative strengths
 strong <- percentage[1] * n.para  # 10 strong predictive variables
-medium <- percentage[2] * n.para  # 30% medium predictive variables
-weak <- percentage[3] * n.para    # 30% weak predictive variables
-noise <- percentage[4] * n.para   # 30% noise predictive variables
+medium <- percentage[2] * n.para  # 20% medium predictive variables
+weak <- percentage[3] * n.para    # 20% weak predictive variables
+noise <- percentage[4] * n.para   # 50% noise predictive variables
 
 # Assign relative strengths
 weights <- c(rep(1, strong), rep(0.5, medium), rep(0.25, weak), rep(0, noise))
