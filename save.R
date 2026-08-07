@@ -15,10 +15,6 @@ source("method/unirank.R")
 library(doParallel)
 library(foreach)
 
-# Read number of cores allocated by Myriad
-ncores <- suppressWarnings(
-  as.integer(Sys.getenv("NSLOTS", unset = "1"))
-)
 
 # Create output directory
 dir.create(
@@ -28,7 +24,7 @@ dir.create(
 )
 
 # Create parallel cluster
-cl <- parallel::makeCluster(ncores)
+cl <- parallel::makeCluster(32)
 doParallel::registerDoParallel(cl)
 
 # Run 1,000 repetitions
