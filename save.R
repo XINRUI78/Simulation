@@ -1,4 +1,5 @@
 # Source required scripts
+install.packages("RcppNumerical")
 source("tool/generate_ss_s3.R")
 source("tool/perform_s3.R")
 source("tool/measures.R")
@@ -14,6 +15,7 @@ source("method/unirank.R")
 
 library(doParallel)
 library(foreach)
+library(RcppNumerical)
 
 
 # Create output directory
@@ -31,7 +33,6 @@ doParallel::registerDoParallel(cl)
 result_ndev <- foreach(
   i = seq_len(1000),
   .combine = rbind,
-  .errorhandling = "pass",
   .packages = c(
     "mvtnorm",
     "pROC",
