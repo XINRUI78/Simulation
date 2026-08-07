@@ -1,5 +1,4 @@
 # Source required scripts
-install.packages("RcppNumerical")
 source("tool/generate_ss_s3.R")
 source("tool/perform_s3.R")
 source("tool/measures.R")
