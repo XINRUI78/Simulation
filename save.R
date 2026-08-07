@@ -37,18 +37,6 @@ result_ndev <- foreach(
     "pROC",
     "glmnet"
   ),
-  .export = c(
-    "perform_s3",
-    "generate_ss_s3",
-    "measures",
-    "opt_beta_s3",
-    "back_logit",
-    "unilogit",
-    "mod_penal_ave_foreach",
-    "unirank",
-    "berank",
-    "lasso_exact"
-  )
 ) %dopar% {
 
   perform_s3(
