@@ -36,7 +36,7 @@ result_ndev <- foreach(
     "mvtnorm",
     "pROC",
     "glmnet"
-  ),
+  )
 ) %dopar% {
 
   perform_s3(
