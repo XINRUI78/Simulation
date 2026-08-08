@@ -37,6 +37,19 @@ result_ndev <- foreach(
     "mvtnorm",
     "pROC",
     "glmnet"
+  ),
+  .export = c(
+  "generate_ss_s3.R",
+"perform_s3.R",
+"measures.R",
+"back_logit.R",
+"backward_pvalue.R",
+"berank.R",
+"lasso_exact.R",
+"mod_penal_ave_foreach.R",
+"stepwise_pvalue.R",
+"unilogit.R",
+"unirank.R"
   )
 ) %dopar% {
 
