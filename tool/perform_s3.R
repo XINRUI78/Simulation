@@ -179,13 +179,9 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      lasso_p <- lasso_exact$lasso_p
                                                                                                      method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), varsel_lasso, lambda)
                                                                                                      
-                                                                                              
-                                                                                                     
-                                                                                                     return(method_result)
-                                                                                                   
+                                                                                            
   
 
-  
   colnames(method_result) <- c(
     "prevalence",
     "anticipated c-stat",
