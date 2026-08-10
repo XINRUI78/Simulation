@@ -79,3 +79,14 @@ opt_beta_s3 <- function(n.para, n.true, prev, c, weights) {
 opt_beta <- opt_beta_s3(n.para, n.true, prev, c, weights)
 beta0 <- opt_beta$beta0
 beta <- opt_beta$beta1
+
+# Generate a large dataset (200,000) using function generate_ss
+  # Check prevalence and C-statistic; 
+  n <- 200000; 
+  data <- generate_ss_s3(n, n.para, n.true, beta0, beta)
+  prev_check <- round(mean(data[,1]),2)
+  X <- as.matrix(data[,-1])
+  eta <- rep(beta0, n) + X%*%beta
+  p <- 1/(1+exp(-eta))
+  cstat <- pROC::roc(response = as.numeric(data[,1]), predictor = as.vector(p), levels = c(0, 1), direction = "<")
+  auc_check <- round(as.vector(cstat$auc),2)
