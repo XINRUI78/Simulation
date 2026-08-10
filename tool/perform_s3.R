@@ -1,17 +1,17 @@
 library(doParallel)
 library(foreach)
-
-perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval){
-  # Generate a large dataset (200,000) using function generate_ss
+ # Generate a large dataset (200,000) using function generate_ss
   # Check prevalence and C-statistic; 
   n <- 200000; 
   data <- generate_ss_s3(n, n.para, n.true, beta0, beta)
-  prev <- round(mean(data[,1]),2)
+  prev_ <- round(mean(data[,1]),2)
   X <- as.matrix(data[,-1])
   eta <- rep(beta0, n) + X%*%beta
   p <- 1/(1+exp(-eta))
   cstat <- pROC::roc(response = as.numeric(data[,1]), predictor = as.vector(p), levels = c(0, 1), direction = "<")
-  auc <- round(as.vector(cstat$auc),2)
+  auc_ <- round(as.vector(cstat$auc),2)
+perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev_, auc_){
+ 
 
                                                                                                      set.seed(i)
                                                                                                      
