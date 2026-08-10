@@ -4,9 +4,9 @@ generate_ss_s3 <- function(n, n.para, n.true, beta0, beta, rho = 0.5){
   sigma <- diag(n.para)
   true.idx <- seq_len(n.true)
   noise.idx <- (n.true + 1):n.para
-  sigma[noise.idx, noise.idx] <- 0
-  sigma[true.idx, noise.idx] <- 0.2
-  sigma[noise.idx, true.idx] <- 0.2
+  sigma[noise.idx, noise.idx] <- 0.5
+  sigma[true.idx, noise.idx] <- 0.5
+  sigma[noise.idx, true.idx] <- 0.5
   sigma[true.idx, true.idx] <- rho
   
   # Variances must equal one
