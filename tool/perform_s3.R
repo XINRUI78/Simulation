@@ -10,7 +10,7 @@ library(foreach)
   p <- 1/(1+exp(-eta))
   cstat <- pROC::roc(response = as.numeric(data[,1]), predictor = as.vector(p), levels = c(0, 1), direction = "<")
   auc_ <- round(as.vector(cstat$auc),2)
-perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev_, auc_){
+perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
  
 
                                                                                                      set.seed(i)
