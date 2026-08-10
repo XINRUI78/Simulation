@@ -39,17 +39,17 @@ result_ndev <- foreach(
     "glmnet"
   ),
   .export = c(
-  "generate_ss_s3.R",
-"perform_s3.R",
-"measures.R",
-"back_logit.R",
-"backward_pvalue.R",
-"berank.R",
-"lasso_exact.R",
-"mod_penal_ave_foreach.R",
-"stepwise_pvalue.R",
-"unilogit.R",
-"unirank.R"
+  "generate_ss_s3",
+"perform_s3",
+"measures",
+"back_logit",
+"backward_pvalue",
+"berank",
+"lasso_exact",
+"mod_penal_ave_foreach",
+"stepwise_pvalue",
+"unilogit",
+"unirank"
   )
 ) %dopar% {
 
