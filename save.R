@@ -60,7 +60,9 @@ result_ndev <- foreach(
     n.true = n.true,
     beta0 = beta0,
     beta = beta,
-    nval = nval
+    nval = nval,
+    prev = prev_check,
+    auc = auc_check
   )
 }
 
