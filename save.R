@@ -39,18 +39,12 @@ result_ndev <- foreach(
     "glmnet"
   ),
   .export = c(
-  "generate_ss_s3",
-"perform_s3",
-"measures",
-"back_logit",
-"backward_pvalue",
 "berank",
 "lasso_exact",
-"mod_penal_ave_foreach",
 "stepwise_pvalue",
-"unilogit",
 "unirank"
-  )
+  ),
+  .errorhandling = "pass"
 ) %dopar% {
 
   perform_s3(
