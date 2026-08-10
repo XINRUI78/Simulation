@@ -17,5 +17,5 @@ library(foreach)
 library(RcppNumerical)
 library(brglm2)
 
-test <- perform_s3 (2, ndev, n.para, n.true, beta0, beta, nval)
+test <- perform_s3 (2, ndev, n.para, n.true, beta0, beta, nval, prev_, auc_)
 saveRDS(test,"result.rds")
