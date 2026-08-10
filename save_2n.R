@@ -66,7 +66,7 @@ parallel::stopCluster(cl)
 # Save result
 output_file <- file.path(
   "results",
-  "result_2n_all5.rds")
+  "result_2n.rds")
 
 
 saveRDS(
