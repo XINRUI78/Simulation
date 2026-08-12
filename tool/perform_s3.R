@@ -172,7 +172,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      method_result[16,] <- c(prev, auc, ndev, 15, measures(yval, be_p), varsel_be, NA)
                                                                                                      
                                                                                                      # method = 16 for LASSO less than 15
-                                                                                                     lasso_exact <- lasso_exact(x, y, xval, 15, max_attempts = 10, initial_nlambda = 100) 
+                                                                                                     lasso_exact <- lasso_exact(x, y, 15, max_attempts = 10, initial_nlambda = 100) 
                                                                                                      # **Refit LASSO model using only the selected lambda**
     selected_lambda <- lasso_exact$selected_lambda
     mid_model <- glmnet(as.matrix(x), y, family = "binomial", alpha = 1, lambda = selected_lambda)
