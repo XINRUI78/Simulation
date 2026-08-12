@@ -20,7 +20,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      
                                                                                                      # Model fitting
                                                                                                      # Initialize matrices for the different methods for this iteration
-                                                                                                     method_result <- matrix(NA, nrow = 17, ncol = 10 + n.para)  # 13 methods
+                                                                                                     method_result <- matrix(NA, nrow = 18, ncol = 10 + n.para)  # 13 methods
                                                                                                      
                                                                                                      # method = 0 for full model
                                                                                                      fit <- glm(y ~ ., data = data.dev, family = 'binomial')
