@@ -48,14 +48,6 @@ if (is.null(selected_lambda)) {
 
   smaller_indices <- which(num_selected < number)
 
-  if (length(smaller_indices) == 0) {
-    stop(
-      "lasso_exact: no model with fewer than ",
-      number,
-      " predictors was found."
-    )
-  }
-
   closest_smaller <- max(num_selected[smaller_indices])
 
   candidate_indices <- which(
@@ -68,7 +60,8 @@ if (is.null(selected_lambda)) {
 
   selected_lambda <- cv_lasso$lambda[best_index]
 }
-    
+  return(selected_lambda = selected_lambda)
+}    
 
 
     
