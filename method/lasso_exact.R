@@ -60,7 +60,7 @@ if (is.null(selected_lambda)) {
 
   selected_lambda <- cv_lasso$lambda[best_index]
 }
-  return(selected_lambda = selected_lambda)
+  return(list(selected_lambda = selected_lambda))
 }    
 
 
