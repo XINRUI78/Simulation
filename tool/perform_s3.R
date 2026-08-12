@@ -20,7 +20,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      
                                                                                                      # Model fitting
                                                                                                      # Initialize matrices for the different methods for this iteration
-                                                                                                     method_result <- matrix(NA, nrow = 18, ncol = 10 + n.para)  # 13 methods
+                                                                                                     method_result <- matrix(NA, nrow = 17, ncol = 10 + n.para)  # 13 methods
                                                                                                      
                                                                                                      # method = 0 for full model
                                                                                                      fit <- glm(y ~ ., data = data.dev, family = 'binomial')
@@ -156,7 +156,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      method_result[14, ] <- c(prev, auc, ndev, 13, measures(yval, p_mod_lasso), varsel_mod_lasso, as.numeric(mod_lasso$lambda.boot))
                                                                                                      
                                                                                                      # method = 14 for univariable ranking with the top 15 predictors
-                                                                                                     unirank <- unirank(as.matrix(x), y, 15)
+                                                                                                     unirank <- unirank(as.matrix(x), y, 8)
                                                                                                      varsel_uni <- unirank$varsel_uni
                                                                                                      unimodel <- unirank$model
                                                                                                      uni_eta <- as.matrix(cbind(1,xval[,varsel_uni == 1]))%*%coef(unimodel)
@@ -164,7 +164,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      method_result[15,] <- c(prev, auc, ndev, 14, measures(yval, uni_p), varsel_uni, NA)
                                                                                                      
                                                                                                      # method = 15 for backward elimination ranking with the top 15 predictors
-                                                                                                     berank <- berank(as.matrix(x), y, 15)
+                                                                                                     berank <- berank(as.matrix(x), y, 8)
                                                                                                      varsel_be <- berank$varsel_be
                                                                                                      bemodel <- berank$model
                                                                                                      be_eta <- as.matrix(cbind(1,xval[,varsel_be == 1]))%*%coef(bemodel)
@@ -172,26 +172,15 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      method_result[16,] <- c(prev, auc, ndev, 15, measures(yval, be_p), varsel_be, NA)
                                                                                                      
                                                                                                      # method = 16 for LASSO less than 15
-                                                                                                     lasso_exact <- lasso_exact(x, y, 15, max_attempts = 10, initial_nlambda = 100) 
-                                                                                                     # **Refit LASSO model using only the selected lambda**
-    selected_lambda <- lasso_exact$selected_lambda
-    mid_model <- glmnet(as.matrix(x), y, family = "binomial", alpha = 1, lambda = selected_lambda)
-    mid_var <- ifelse(as.numeric(coef(mid_model, s = selected_lambda)[-1]) != 0, 1, 0)
-    lasso_p <- as.vector(predict(mid_model, as.matrix(xval), s = selected_lambda, type="response"))
-    method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), mid_var, selected_lambda)
+                                                                                                     lasso_exact <- lasso_exact(x, y, xval, 8, max_attempts = 10, initial_nlambda = 100) 
+                                                                                                     varsel_lasso <- lasso_exact$varsel_lasso
+                                                                                                     lassomodel <- lasso_exact$model
+                                                                                                     lambda <- lasso_exact$lambda
+                                                                                                     lasso_p <- lasso_exact$lasso_p
+                                                                                                     method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), varsel_lasso, lambda)
  
-    # Ensure we have at most 15 predictors
-    x_top15 <- x[, which(mid_var == 1)]
-    
-    final_model <- cv.glmnet(as.matrix(x_top15), y, family = "binomial", alpha = 1, nfolds = 10)
-    final_lambda <- final_model$lambda.min 
-    final_var <- ifelse(as.numeric(coef(final_model, s = final_lambda)[-1]) != 0, 1, 0)
-    lasso_p <- as.vector(predict(final_model, as.matrix(xval[,which(mid_var == 1)]), s = final_lambda, type="response"))
-    # Create binary selection vector
-    varsel_lasso <- mid_var
-    varsel_lasso[varsel_lasso == 1] <- final_var
-    method_result[18,] <- c(prev, auc, ndev, 17, measures(yval, lasso_p), varsel_lasso, final_lambda)
-                                                                                                     
+ 
+                                                                                                    
 
   colnames(method_result) <- c(
     "prevalence",
