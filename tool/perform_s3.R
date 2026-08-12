@@ -173,14 +173,25 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      
                                                                                                      # method = 16 for LASSO less than 15
                                                                                                      lasso_exact <- lasso_exact(x, y, xval, 15, max_attempts = 10, initial_nlambda = 100) 
-                                                                                                     varsel_lasso <- lasso_exact$varsel_lasso
-                                                                                                     lassomodel <- lasso_exact$model
-                                                                                                     lambda <- lasso_exact$lambda
-                                                                                                     lasso_p <- lasso_exact$lasso_p
-                                                                                                     method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), varsel_lasso, lambda)
+                                                                                                     # **Refit LASSO model using only the selected lambda**
+    selected_lambda <- lasso_exact$selected_lambda
+    mid_model <- glmnet(as.matrix(x), y, family = "binomial", alpha = 1, lambda = selected_lambda)
+    mid_var <- ifelse(as.numeric(coef(mid_model, s = selected_lambda)[-1]) != 0, 1, 0)
+    lasso_p <- as.vector(predict(mid_model, as.matrix(xval), s = selected_lambda, type="response"))
+    method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), mid_var, selected_lambda)
+ 
+    # Ensure we have at most 15 predictors
+    x_top15 <- x[, which(mid_var == 1)]
+    
+    final_model <- cv.glmnet(as.matrix(x_top15), y, family = "binomial", alpha = 1, nfolds = 10)
+    final_lambda <- final_model$lambda.min 
+    final_var <- ifelse(as.numeric(coef(final_model, s = final_lambda)[-1]) != 0, 1, 0)
+    lasso_p <- as.vector(predict(final_model, as.matrix(xval[,which(mid_var == 1)]), s = final_lambda, type="response"))
+    # Create binary selection vector
+    varsel_lasso <- mid_var
+    varsel_lasso[varsel_lasso == 1] <- final_var
+    method_result[18,] <- c(prev, auc, ndev, 17, measures(yval, lasso_p), varsel_lasso, final_lambda)
                                                                                                      
-                                                                                            
-  
 
   colnames(method_result) <- c(
     "prevalence",
