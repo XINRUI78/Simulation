@@ -1,4 +1,4 @@
-lasso_exact <- function(x, y, xval, number, max_attempts = 10, initial_nlambda = 100) {
+lasso_exact <- function(x, y, number, max_attempts = 10, initial_nlambda = 100) {
 library(glmnet)
 attempt <- 1
 nlambda <- initial_nlambda
