@@ -76,3 +76,14 @@ saveRDS(
   compress = TRUE
 )
 
+# Save CSV result
+output_csv <- file.path(
+  "results",
+  "result_n_all5.csv"
+)
+
+write.csv(
+  result_ndev,
+  file = output_csv,
+  row.names = FALSE
+)
