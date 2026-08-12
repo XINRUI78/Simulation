@@ -76,13 +76,13 @@ saveRDS(
 )
 
 
-output_file <- file.path(
+output_csv <- file.path(
   "results",
-  "result_2n.csv")
+  "result_2n.csv"
+)
 
-
-saveRDS(
+write.csv(
   result_ndev,
-  file = output_file,
-  compress = TRUE
+  file = output_csv,
+  row.names = FALSE
 )
