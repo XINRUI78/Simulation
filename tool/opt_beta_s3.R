@@ -9,8 +9,8 @@ opt_beta_s3 <- function(n.para, n.true, prev, c, weights) {
   true.idx <- seq_len(n.true)
   noise.idx <- (n.true + 1):n.para
   sigma[noise.idx, noise.idx] <- 0
-  sigma[true.idx, noise.idx] <- 0.2
-  sigma[noise.idx, true.idx] <- 0.2
+  sigma[true.idx, noise.idx] <- 0.5
+  sigma[noise.idx, true.idx] <- 0.5
   sigma[true.idx, true.idx] <- 0.5
   diag(sigma) <- 1
   # Generate data
