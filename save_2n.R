@@ -74,3 +74,15 @@ saveRDS(
   file = output_file,
   compress = TRUE
 )
+
+
+output_file <- file.path(
+  "results",
+  "result_2n.csv")
+
+
+saveRDS(
+  result_ndev,
+  file = output_file,
+  compress = TRUE
+)
