@@ -1,5 +1,14 @@
 measures <- function(yval, p_val){
-  
+
+  # Prevent probabilities of exactly 0 or 1
+  eps <- 1e-15
+  p_val <- pmin(pmax(p_val, eps), 1 - eps)
+
+  # Check for missing/non-finite predictions
+  if (any(!is.finite(p_val))) {
+    stop("p_val contains NA, NaN, or infinite values")
+  }
+
   eta_val <- log(p_val/(1-p_val))
   
   # Calibration slope
