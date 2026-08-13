@@ -75,7 +75,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      uni05_back_model <- uni05_back$backmodel
                                                                                                      uni05_back_eta <- as.matrix(cbind(1,xval[,varsel_uni05_back == 1]))%*%coef(uni05_back_model)
                                                                                                      uni05_back_p <- as.vector(1/(1+exp(-uni05_back_eta)))
-                                                                                                     method_result[6,] <- c(prev, auc, ndev, 5, measures(yval, uni05_back_p), varsel_uni05_back, 0.05)
+                                                                                                     method_result[6,] <- c(prev, auc, ndev, 5, safe_measures(yval, uni05_back_p, method = 5, i = i), varsel_uni05_back, 0.05)
                                                                                                      
                                                                                                      # method = 6 for univariable logistic (p < 0.15) and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
@@ -88,7 +88,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      uni15_back_model <- uni15_back$backmodel
                                                                                                      uni15_back_eta <- as.matrix(cbind(1,xval[,varsel_uni15_back == 1]))%*%coef(uni15_back_model)
                                                                                                      uni15_back_p <- as.vector(1/(1+exp(-uni15_back_eta)))
-                                                                                                     method_result[7,] <- c(prev, auc, ndev, 6, measures(yval, uni15_back_p), varsel_uni15_back, 0.15)
+                                                                                                     method_result[7,] <- c(prev, auc, ndev, 6, safe_measures(yval, uni15_back_p, method = 6, i = i), varsel_uni15_back, 0.15)
                                                                                                      
                                                                                                      # method = 7 for LASSO using lambda.min, method = 8 for LASSO using lambda.1se
                                                                                                      lasso <- glmnet::cv.glmnet(as.matrix(x), y, alpha = 1, family = "binomial", type.measure = "deviance")
@@ -102,22 +102,22 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      varsel_min <- ifelse(as.numeric(coef(lasso, s = lambda_min)[-1]) != 0, 1, 0)
                                                                                                      varsel_1se <- ifelse(as.numeric(coef(lasso, s = lambda_1se)[-1]) != 0, 1, 0)
                                                                                                      
-                                                                                                     method_result[8,] <- c(prev, auc, ndev, 7, measures(yval, lassomin_p), varsel_min, lambda_min)
-                                                                                                     method_result[9,] <- c(prev, auc, ndev, 8, measures(yval, lasso1se_p), varsel_1se, lambda_1se)
+                                                                                                     method_result[8,] <- c(prev, auc, ndev, 7, safe_measures(yval, lassomin_p, method = 7, i = i), varsel_min, lambda_min)
+                                                                                                     method_result[9,] <- c(prev, auc, ndev, 8, safe_measures(yval, lasso1se_p, method = 8, i = i), varsel_1se, lambda_1se)
                                                                                                      
                                                                                                      # method = 9 for LASSO lambda.min and MLE
                                                                                                      data.s2 <- data.dev[, c(1, 1 + which(varsel_min == 1))]
                                                                                                      fit <- glm(y ~ ., data = data.s2, family = 'binomial')
                                                                                                      eta_min_mle <- as.matrix(cbind(1,xval[, varsel_min == 1]))%*%coef(fit)
                                                                                                      p_min_mle <- as.vector(1/(1+exp(-eta_min_mle)))
-                                                                                                     method_result[10,] <- c(prev, auc, ndev, 9, measures(yval, p_min_mle), varsel_min, lambda_min)
+                                                                                                     method_result[10,] <- c(prev, auc, ndev, 9, safe_measures(yval, p_min_mle, method = 9, i = i), varsel_min, lambda_min)
                                                                                                      
                                                                                                      # method = 10 for LASSO lambda.1se and MLE
                                                                                                      data.s2 <- data.dev[, c(1, 1 + which(varsel_1se == 1))]
                                                                                                      fit <- glm(y ~ ., data = data.s2, family = 'binomial')
                                                                                                      eta_1se_mle <- as.matrix(cbind(1,xval[, varsel_1se == 1]))%*%coef(fit)
                                                                                                      p_1se_mle <- as.vector(1/(1+exp(-eta_1se_mle)))
-                                                                                                     method_result[11,] <- c(prev, auc, ndev, 10, measures(yval, p_1se_mle), varsel_1se, lambda_1se)
+                                                                                                     method_result[11,] <- c(prev, auc, ndev, 10, safe_measures(yval, p_1se_mle, method = 10, i = i), varsel_1se, lambda_1se)
                                                                                                      
                                                                                                      # method = 11 for LASSO lambda.min and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
@@ -130,7 +130,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      lasso_min_back_model <- lassomin_back$backmodel
                                                                                                      lasso_min_back_eta <- as.matrix(cbind(1,xval[,varsel_min_back == 1]))%*%coef(lasso_min_back_model)
                                                                                                      lasso_min_back_p <- as.vector(1/(1+exp(-lasso_min_back_eta)))
-                                                                                                     method_result[12, ] <- c(prev, auc, ndev, 11, measures(yval, lasso_min_back_p), varsel_min_back, lambda_min)
+                                                                                                     method_result[12, ] <- c(prev, auc, ndev, 11, safe_measures(yval, lasso_min_back_p, method = 11, i = i), varsel_min_back, lambda_min)
                                                                                                      
                                                                                                      # method = 12 for LASSO lambda.1se and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
@@ -143,7 +143,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      lasso1se_back_model <- lasso_1se_back$backmodel
                                                                                                      lasso1se_back_eta <- as.matrix(cbind(1,xval[,varsel_lasso1se_back == 1]))%*%coef(lasso1se_back_model)
                                                                                                      lasso1se_back_p <- as.vector(1/(1+exp(-lasso1se_back_eta)))
-                                                                                                     method_result[13, ] <- c(prev, auc, ndev, 12, measures(yval, lasso1se_back_p), varsel_lasso1se_back, lambda_1se)
+                                                                                                     method_result[13, ] <- c(prev, auc, ndev, 12, safe_measures(yval, lasso1se_back_p, method = 12, i = i), varsel_lasso1se_back, lambda_1se)
                                                                                                      
                                                                                                      # method = 13 for modified LASSO
                                                                                                      nfolds <- 10
@@ -153,7 +153,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      eta_mod_lasso <- as.matrix(cbind(1,xval))%*% mod_lasso$beta.boot
                                                                                                      p_mod_lasso <- as.vector(1/(1+exp(-eta_mod_lasso)))
                                                                                                      varsel_mod_lasso <- ifelse(as.numeric(mod_lasso$beta.boot)[-1] != 0, 1, 0)
-                                                                                                     method_result[14, ] <- c(prev, auc, ndev, 13, measures(yval, p_mod_lasso), varsel_mod_lasso, as.numeric(mod_lasso$lambda.boot))
+                                                                                                     method_result[14, ] <- c(prev, auc, ndev, 13, safe_measures(yval, p_mod_lasso, method = 13, i = i), varsel_mod_lasso, as.numeric(mod_lasso$lambda.boot))
                                                                                                      
                                                                                                      # method = 14 for univariable ranking with the top 15 predictors
                                                                                                      unirank <- unirank(as.matrix(x), y, 8)
