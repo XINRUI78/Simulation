@@ -161,7 +161,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      unimodel <- unirank$model
                                                                                                      uni_eta <- as.matrix(cbind(1,xval[,varsel_uni == 1]))%*%coef(unimodel)
                                                                                                      uni_p <- as.vector(1/(1+exp(-uni_eta)))
-                                                                                                     method_result[15,] <- c(prev, auc, ndev, 14, measures(yval, uni_p), varsel_uni, NA)
+                                                                                                     method_result[15,] <- c(prev, auc, ndev, 14, safe_measures(yval, uni_p, method = 14, i = i), varsel_uni, NA)
                                                                                                      
                                                                                                      # method = 15 for backward elimination ranking with the top 15 predictors
                                                                                                      berank <- berank(as.matrix(x), y, 8)
@@ -169,7 +169,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      bemodel <- berank$model
                                                                                                      be_eta <- as.matrix(cbind(1,xval[,varsel_be == 1]))%*%coef(bemodel)
                                                                                                      be_p <- as.vector(1/(1+exp(-be_eta)))
-                                                                                                     method_result[16,] <- c(prev, auc, ndev, 15, measures(yval, be_p), varsel_be, NA)
+                                                                                                     method_result[16,] <- c(prev, auc, ndev, 15, safe_measures(yval, be_p, method = 15, i = i), varsel_be, NA)
                                                                                                      
                                                                                                      # method = 16 for LASSO less than 15
                                                                                                      lasso_exact <- lasso_exact(x, y, xval, 8, max_attempts = 10, initial_nlambda = 100) 
@@ -177,7 +177,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      lassomodel <- lasso_exact$model
                                                                                                      lambda <- lasso_exact$lambda
                                                                                                      lasso_p <- lasso_exact$lasso_p
-                                                                                                     method_result[17,] <- c(prev, auc, ndev, 16, measures(yval, lasso_p), varsel_lasso, lambda)
+                                                                                                     method_result[17,] <- c(prev, auc, ndev, 16, safe_measures(yval, lasso_p, method = 16, i = i), varsel_lasso, lambda)
  
  
                                                                                                     
