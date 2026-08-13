@@ -156,7 +156,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      method_result[14, ] <- c(prev, auc, ndev, 13, safe_measures(yval, p_mod_lasso, method = 13, i = i), varsel_mod_lasso, as.numeric(mod_lasso$lambda.boot))
                                                                                                      
                                                                                                      # method = 14 for univariable ranking with the top 15 predictors
-                                                                                                     unirank <- unirank(as.matrix(x), y, 8)
+                                                                                                     unirank <- unirank(as.matrix(x), y, 15)
                                                                                                      varsel_uni <- unirank$varsel_uni
                                                                                                      unimodel <- unirank$model
                                                                                                      uni_eta <- as.matrix(cbind(1,xval[,varsel_uni == 1]))%*%coef(unimodel)
@@ -164,7 +164,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      method_result[15,] <- c(prev, auc, ndev, 14, safe_measures(yval, uni_p, method = 14, i = i), varsel_uni, NA)
                                                                                                      
                                                                                                      # method = 15 for backward elimination ranking with the top 15 predictors
-                                                                                                     berank <- berank(as.matrix(x), y, 8)
+                                                                                                     berank <- berank(as.matrix(x), y, 15)
                                                                                                      varsel_be <- berank$varsel_be
                                                                                                      bemodel <- berank$model
                                                                                                      be_eta <- as.matrix(cbind(1,xval[,varsel_be == 1]))%*%coef(bemodel)
@@ -172,7 +172,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      method_result[16,] <- c(prev, auc, ndev, 15, safe_measures(yval, be_p, method = 15, i = i), varsel_be, NA)
                                                                                                      
                                                                                                      # method = 16 for LASSO less than 15
-                                                                                                     lasso_exact <- lasso_exact(x, y, xval, 8, max_attempts = 10, initial_nlambda = 100) 
+                                                                                                     lasso_exact <- lasso_exact(x, y, xval, 15, max_attempts = 10, initial_nlambda = 100) 
                                                                                                      varsel_lasso <- lasso_exact$varsel_lasso
                                                                                                      lassomodel <- lasso_exact$model
                                                                                                      lambda <- lasso_exact$lambda
