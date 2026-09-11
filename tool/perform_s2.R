@@ -1,18 +1,18 @@
 library(doParallel)
 library(foreach)
 
-perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
+perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
  
 
                                                                                                      set.seed(i)
                                                                                                      
                                                                                                      # generate a development dataset of size ndev=2000
-                                                                                                     data.dev <- generate_ss_s3(ndev, n.para, n.true, beta0, beta)
+                                                                                                     data.dev <- generate_ss_s2(ndev, n.para, n.true, beta0, beta)
                                                                                                      x <- data.dev[,-1]
                                                                                                      y <- data.dev[,1]
                                                                                                      
                                                                                                      # generate a validation dataset of size nval
-                                                                                                     data.val <- generate_ss_s3(nval, n.para, n.true, beta0, beta)
+                                                                                                     data.val <- generate_ss_s2(nval, n.para, n.true, beta0, beta)
                                                                                                      xval <- data.val[,-1]
                                                                                                      yval <- data.val[,1]
                                                                                                      
