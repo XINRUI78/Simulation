@@ -1,8 +1,8 @@
 # Source required scripts
-source("tool/generate_ss_s3.R")
-source("tool/perform_s3.R")
+source("tool/generate_ss_s2.R")
+source("tool/perform_s2.R")
 source("tool/measures.R")
-source("tool/run_s3.R")
+source("tool/run_s2.R")
 source("method/back_logit.R")
 source("method/backward_pvalue.R")
 source("method/berank.R")
@@ -46,7 +46,7 @@ result_ndev <- foreach(
   .errorhandling = "pass"
 ) %dopar% {
   
-  perform_s3(
+  perform_s2(
     i = i,
     ndev = 2*ndev,
     n.para = n.para,
@@ -78,7 +78,7 @@ saveRDS(
 
 output_csv <- file.path(
   "results",
-  "result_2n_all5.csv"
+  "result2_2n.csv"
 )
 
 write.csv(
