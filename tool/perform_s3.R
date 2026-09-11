@@ -191,7 +191,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
     "calibration in the large",
     "auc",
     "Brier score",
-    "rmspe",
+    "mape",
     paste0("varsel", 1:n.para),
     "option"
   )
