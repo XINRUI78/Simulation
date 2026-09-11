@@ -20,13 +20,13 @@ weights <- c(rep(1, strong), rep(0.5, medium), rep(0.25, weak), rep(0, noise))
 
 #rss <- samplesizedev(outcome = "Binary", S = 0.9, phi = prev, c = c, p = n.para)
 #ndev <- rss$sim # recommended sample size
-ndev <- 1538
+ndev <- 1505
 ndev1 <- round(ndev/2) # half the recommended sample size
 ndev2 <- round(ndev/4) # one-quarter recommended sample size
 
 library(mvtnorm)
 library(pROC)
-opt_beta_s3 <- function(n.para, n.true, prev, c, weights) {
+opt_beta_s2 <- function(n.para, n.true, prev, c, weights) {
   # Generate predictors (X) from multivariate normal distribution
   n = 500000
   sigma <- diag(n.para)
@@ -76,14 +76,14 @@ opt_beta_s3 <- function(n.para, n.true, prev, c, weights) {
   )
 }
 # Obtain the true coefficients
-opt_beta <- opt_beta_s3(n.para, n.true, prev, c, weights)
+opt_beta <- opt_beta_s2(n.para, n.true, prev, c, weights)
 beta0 <- opt_beta$beta0
 beta <- opt_beta$beta1
 
 # Generate a large dataset (200,000) using function generate_ss
   # Check prevalence and C-statistic; 
   n <- 200000; 
-  data <- generate_ss_s3(n, n.para, n.true, beta0, beta)
+  data <- generate_ss_s2(n, n.para, n.true, beta0, beta)
   prev_check <- round(mean(data[,1]),2)
   X <- as.matrix(data[,-1])
   eta <- rep(beta0, n) + X%*%beta
