@@ -2,7 +2,7 @@ library(MASS)  # For mvrnorm to simulate predictors
 library(pROC)  # For AUC calculation
 
 # Define the optimizer function
-opt_beta_s3 <- function(n.para, n.true, prev, c, weights) {
+opt_beta_s2 <- function(n.para, n.true, prev, c, weights) {
   # Generate predictors (X) from multivariate normal distribution
   n = 500000
   sigma <- diag(n.para)
