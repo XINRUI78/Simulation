@@ -1,7 +1,7 @@
 library(doParallel)
 library(foreach)
 
-perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
+perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.restrict = NULL){
  
 
                                                                                                      set.seed(i)
@@ -23,7 +23,10 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
    
                                                                                                      # Model fitting
                                                                                                      # Initialize matrices for the different methods for this iteration
-                                                                                                     method_result <- matrix(NA, nrow = 17, ncol = 10 + n.para)  # 13 methods
+                                                                                                     
+                                                                                                     # Number of methods to run
+                                                                                                     n_methods <- if (is.null(n.restrict)) 14 else 17
+                                                                                                     method_result <- matrix(NA, nrow = n_methods, ncol = 10 + n.para)  # 13 methods
                                                                                                      
                                                                                                      # method = 0 for full model
                                                                                                      fit <- glm(y ~ ., data = data.dev, family = 'binomial')
@@ -158,29 +161,32 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      varsel_mod_lasso <- ifelse(as.numeric(mod_lasso$beta.boot)[-1] != 0, 1, 0)
                                                                                                      method_result[14, ] <- c(prev, auc, ndev, 13, safe_measures(yval, p_mod_lasso, p_true, method = 13, i = i), varsel_mod_lasso, as.numeric(mod_lasso$lambda.boot))
                                                                                                      
-                                                                                                     # method = 14 for univariable ranking with the top 15 predictors
-                                                                                                     unirank <- unirank(as.matrix(x), y, 15)
+                                                                                                     if (!is.null(n.restrict)) {
+
+                                                                                                     # method = 14 for univariable ranking with the top n.restrict predictors
+                                                                                                     unirank <- unirank(as.matrix(x), y, n.restrict)
                                                                                                      varsel_uni <- unirank$varsel_uni
                                                                                                      unimodel <- unirank$model
                                                                                                      uni_eta <- as.matrix(cbind(1,xval[,varsel_uni == 1]))%*%coef(unimodel)
                                                                                                      uni_p <- as.vector(1/(1+exp(-uni_eta)))
                                                                                                      method_result[15,] <- c(prev, auc, ndev, 14, safe_measures(yval, uni_p, p_true, method = 14, i = i), varsel_uni, NA)
                                                                                                      
-                                                                                                     # method = 15 for backward elimination ranking with the top 15 predictors
-                                                                                                     berank <- berank(as.matrix(x), y, 15)
+                                                                                                     # method = 15 for backward elimination ranking with the top n.restrict predictors
+                                                                                                     berank <- berank(as.matrix(x), y, n.restrict)
                                                                                                      varsel_be <- berank$varsel_be
                                                                                                      bemodel <- berank$model
                                                                                                      be_eta <- as.matrix(cbind(1,xval[,varsel_be == 1]))%*%coef(bemodel)
                                                                                                      be_p <- as.vector(1/(1+exp(-be_eta)))
                                                                                                      method_result[16,] <- c(prev, auc, ndev, 15, safe_measures(yval, be_p, p_true, method = 15, i = i), varsel_be, NA)
                                                                                                      
-                                                                                                     # method = 16 for LASSO less than 15
-                                                                                                     lasso_exact <- lasso_exact(x, y, xval, 15, max_attempts = 10, initial_nlambda = 100) 
+                                                                                                     # method = 16 for LASSO no more than n.restrict
+                                                                                                     lasso_exact <- lasso_exact(x, y, xval, n.restrict, max_attempts = 10, initial_nlambda = 100) 
                                                                                                      varsel_lasso <- lasso_exact$varsel_lasso
                                                                                                      lassomodel <- lasso_exact$model
                                                                                                      lambda <- lasso_exact$lambda
                                                                                                      lasso_p <- lasso_exact$lasso_p
                                                                                                      method_result[17,] <- c(prev, auc, ndev, 16, safe_measures(yval, lasso_p, p_true, method = 16, i = i), varsel_lasso, lambda)
+                                                                                                     }
  
  
                                                                                                     
