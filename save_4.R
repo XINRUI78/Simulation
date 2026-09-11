@@ -1,8 +1,8 @@
 # Source required scripts
-source("tool/generate_ss_s3.R")
-source("tool/perform_s3.R")
+source("tool/generate_ss_s2.R")
+source("tool/perform_s2.R")
 source("tool/measures.R")
-source("tool/run_s3.R")
+source("tool/run_s2.R")
 source("method/back_logit.R")
 source("method/backward_pvalue.R")
 source("method/berank.R")
@@ -46,7 +46,7 @@ result_ndev <- foreach(
   .errorhandling = "pass"
 ) %dopar% {
   
-  perform_s3(
+  perform_s2(
     i = i,
     ndev = ndev2,
     n.para = n.para,
@@ -55,7 +55,8 @@ result_ndev <- foreach(
     beta = beta,
     nval = nval,
     prev = prev_check,
-    auc = auc_check
+    auc = auc_check,
+    n.restrict = 8
   )
 }
 
@@ -66,7 +67,7 @@ parallel::stopCluster(cl)
 # Save result
 output_file <- file.path(
   "results",
-  "result_n_4.rds")
+  "result2_n_4.rds")
 
 
 saveRDS(
