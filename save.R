@@ -66,11 +66,11 @@ parallel::stopCluster(cl)
 # Save CSV result
 output_csv <- file.path(
   "results",
-  "result_n.csv"
+  "result2_n.csv"
 )
 
 write.csv(
-  result2_n,
+  result_ndev,
   file = output_csv,
   row.names = FALSE
 )
