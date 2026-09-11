@@ -55,7 +55,8 @@ result_ndev <- foreach(
     beta = beta,
     nval = nval,
     prev = prev_check,
-    auc = auc_check
+    auc = auc_check,
+    n.restrict = 15
   )
 }
 
