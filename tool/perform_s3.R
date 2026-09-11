@@ -31,7 +31,7 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      p_val <- as.vector(1/(1+exp(-eta_val)))
                                                                                                      method_result[1,] <- c(prev, auc, ndev, 0, measures(yval, p_val, p_true), rep(1, n.para), NA)
                                                                                                      
-                                                                                                     # method = 1 for backward elimination for p value of 0.05
+                                                                                                     # method = 1 for backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
                                                                                                      back_05 <- back_logit(data.dev, "y", "p_value", p_threshold) 
                                                                                                      varsel_back_05 <- back_05$varsel_back
@@ -40,15 +40,15 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      back_p_05 <- as.vector(1/(1+exp(-back_eta_05)))
                                                                                                      method_result[2,] <- c(prev, auc, ndev, 1, measures(yval, back_p_05, p_true), varsel_back_05, p_threshold)
                                                                                                      
-                                                                                                     # method = 2 for backward elimination for p value of 0.15
+                                                                                                     # method = 2 for backward elimination (p < 0.15)
                                                                                                      p_threshold = 0.15
                                                                                                      back_15 <- back_logit(data.dev, "y", "p_value", p_threshold) 
                                                                                                      varsel_back_15 <- back_15$varsel_back
                                                                                                      backmodel_15 <- back_15$backmodel
                                                                                                      back_eta_15 <- as.matrix(cbind(1,xval[,varsel_back_15 == 1]))%*%coef(backmodel_15)
                                                                                                      back_p_15 <- as.vector(1/(1+exp(-back_eta_15)))
-                                                                                                     method_result[3,] <- c(prev, auc, ndev, 2, measures(yval, back_p_15, p_true), varsel_back_15, p_threshold)
-                                                                                                     
+                                                                                                     method_result[3,] <- c(prev, auc, ndev, 2, measures(yval, back_p_15, p_true), varsel_back_15, p_threshold)                                     
+                                                                                                    
                                                                                                      # method = 3 for univariable logistic (p < 0.05)
                                                                                                      p_threshold <- 0.05
                                                                                                      unisum_05 <- unilogit(x, y, p_threshold) 
@@ -65,8 +65,8 @@ perform_s3 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc){
                                                                                                      unimodel_15 <- unisum_15$uni
                                                                                                      uni_eta_15 <- as.matrix(cbind(1, xval[, varsel_uni_15 == 1])) %*% coef(unimodel_15)
                                                                                                      uni_p_15 <- as.vector(1 / (1 + exp(-uni_eta_15)))
-                                                                                                     method_result[5, ] <- c(prev, auc, ndev, 4, measures(yval, uni_p_15, p_true), varsel_uni_15, p_threshold)
-                                                                                                     
+                                                                                                     method_result[5, ] <- c(prev, auc, ndev, 4, measures(yval, uni_p_15, p_true), varsel_uni_15, p_threshold                                                                                                                                                                      
+                                                                                                                                                                                                  
                                                                                                      # method = 5 for univariable logistic (p < 0.05) and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
                                                                                                      data.dev2 <- data.dev[, c(1, 1 + which(varsel_uni_05 == 1))]
