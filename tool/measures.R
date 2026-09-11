@@ -1,4 +1,4 @@
-measures <- function(yval, p_val){
+measures <- function(yval, p_val, p_true){
 
   eta_val <- log(p_val/(1-p_val))
   
@@ -17,13 +17,14 @@ measures <- function(yval, p_val){
   # Brier score
   brier <- mean((p_val - yval)^2)
   
-  # Root mean square prediction error (RMSPE)
-  rmspe <- sqrt(mean((p_val - yval)^2))
+  # Mean absolute prediction error (MAPE)
+  # mean difference between predicted probability and true probability
+  mape <- mean(abs(p_val - p_true))
   
-  return(c(cal_slope, cal_large, auc, brier, rmspe))
+  return(c(cal_slope, cal_large, auc, brier, mape))
 }
 
-safe_measures <- function(yval, p_val, method, i) {
+safe_measures <- function(yval, p_val, p_true, method, i) {
 
   if (any(!is.finite(p_val))) {
     stop(
@@ -33,5 +34,5 @@ safe_measures <- function(yval, p_val, method, i) {
     )
   }
 
-  measures(yval, p_val)
+  measures(yval, p_val, p_true)
 }
