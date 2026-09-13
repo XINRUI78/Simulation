@@ -36,7 +36,7 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.
                                                                                                      
                                                                                                      # method = 1 for backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
-                                                                                                     back_05 <- back_logit(data.dev, "y", "p_value", p_threshold) 
+                                                                                                     back_05 <- backward_pvalue(data.dev, "y", p_threshold) 
                                                                                                      varsel_back_05 <- back_05$varsel_back
                                                                                                      backmodel_05 <- back_05$backmodel
                                                                                                      back_eta_05 <- as.matrix(cbind(1,xval[,varsel_back_05 == 1]))%*%coef(backmodel_05)
@@ -45,7 +45,7 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.
                                                                                                      
                                                                                                      # method = 2 for backward elimination (p < 0.15)
                                                                                                      p_threshold = 0.15
-                                                                                                     back_15 <- back_logit(data.dev, "y", "p_value", p_threshold) 
+                                                                                                     back_15 <- backward_pvalue(data.dev, "y", p_threshold) 
                                                                                                      varsel_back_15 <- back_15$varsel_back
                                                                                                      backmodel_15 <- back_15$backmodel
                                                                                                      back_eta_15 <- as.matrix(cbind(1,xval[,varsel_back_15 == 1]))%*%coef(backmodel_15)
@@ -73,7 +73,7 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.
                                                                                                      # method = 5 for univariable logistic (p < 0.05) and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
                                                                                                      data.dev2 <- data.dev[, c(1, 1 + which(varsel_uni_05 == 1))]
-                                                                                                     uni05_back <- back_logit(data.dev2, "y", "p_value", p_threshold) 
+                                                                                                     uni05_back <- backward_pvalue(data.dev2, "y", p_threshold) 
                                                                                                      
                                                                                                      varsel_uni05_back <- varsel_uni_05
                                                                                                      varsel_uni05_back[varsel_uni05_back == 1] <- uni05_back$varsel_back
@@ -86,7 +86,7 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.
                                                                                                      # method = 6 for univariable logistic (p < 0.15) and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
                                                                                                      data.dev2 <- data.dev[, c(1, 1 + which(varsel_uni_15 ==1))]
-                                                                                                     uni15_back <- back_logit(data.dev2, "y", "p_value", p_threshold) 
+                                                                                                     uni15_back <- backward_pvalue(data.dev2, "y", p_threshold) 
                                                                                                      
                                                                                                      varsel_uni15_back <- varsel_uni_15
                                                                                                      varsel_uni15_back[varsel_uni15_back == 1] <- uni15_back$varsel_back
@@ -128,7 +128,7 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.
                                                                                                      # method = 11 for LASSO lambda.min and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
                                                                                                      data.s2 <- data.dev[, c(1, 1 + which(varsel_min == 1))]
-                                                                                                     lassomin_back <- back_logit(data.s2, "y", "p_value", p_threshold) 
+                                                                                                     lassomin_back <- backward_pvalue(data.s2, "y", p_threshold) 
                                                                                                      
                                                                                                      varsel_min_back <- varsel_min
                                                                                                      varsel_min_back[varsel_min_back == 1] <- lassomin_back$varsel_back
@@ -141,7 +141,7 @@ perform_s2 <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.
                                                                                                      # method = 12 for LASSO lambda.1se and backward elimination (p < 0.05)
                                                                                                      p_threshold = 0.05
                                                                                                      data.s2 <- data.dev[, c(1, 1 + which(varsel_1se == 1))]
-                                                                                                     lasso_1se_back <- back_logit(data.s2, "y", "p_value", p_threshold) 
+                                                                                                     lasso_1se_back <- backward_pvalue(data.s2, "y", p_threshold) 
                                                                                                      
                                                                                                      varsel_lasso1se_back <- varsel_1se
                                                                                                      varsel_lasso1se_back[varsel_lasso1se_back == 1] <- lasso_1se_back$varsel_back
