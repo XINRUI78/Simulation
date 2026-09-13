@@ -29,6 +29,15 @@ backward_pvalue <- function(data, response, p_threshold = 0.05) {
       break
     }
   }
+  # Get the final predictors
+  back_predictors <- names(coef(model))[-1] # Exclude the intercept
   
-  return(model)
+  # Create the indicator row for variable retention
+  indicator <- ifelse(predictors %in% back_predictors, 1, 0)
+  
+  # Return the final model and indicator row
+  return(list(
+    varsel_back = indicator,
+    backmodel = model
+  ))
 }
