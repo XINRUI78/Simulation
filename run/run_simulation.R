@@ -44,7 +44,7 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
     i = seq_len(nrep),
     .combine = rbind,
     .packages = c("mvtnorm", "pROC", "glmnet"),
-    .export = c("backward_pvalue", "mod_penal_ave_foreach", "berank", "lasso_exact", "unirank", "unilogit", "perform", "generate_ss", "measures","opt_beta",safe_measures),
+    .export = c("backward_pvalue", "mod_penal_ave_foreach", "berank", "lasso_exact", "unirank", "unilogit", "perform", "generate_ss", "measures","opt_beta","safe_measures"),
     .errorhandling = "pass"
   ) %dopar% {
 
