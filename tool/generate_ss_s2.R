@@ -1,6 +1,6 @@
 library(mvtnorm)
 library(stats)
-generate_ss_s2 <- function(n, n.para, n.true, beta0, beta){
+generate_ss_s2 <- function(n, n.para, beta0, beta){
   sigma <- diag(n.para)
   sigma[1:n.para, 1:n.para] <- 0.5
   diag(sigma) <- 1  # Ensure variances remain 1
