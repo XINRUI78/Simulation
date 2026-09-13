@@ -23,6 +23,7 @@ weights <- c(rep(1, strong), rep(0.5, medium), rep(0.25, weak), rep(0, noise))
 ndev <- 1505
 ndev1 <- round(ndev/2) # half the recommended sample size
 ndev2 <- round(ndev/4) # one-quarter recommended sample size
+ndev3 <- round(3*ndev/4) # 3/4 recommended sample size
 
 library(mvtnorm)
 library(pROC)
