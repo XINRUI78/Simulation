@@ -45,10 +45,6 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
   beta0 <- beta_fit$beta0
   beta <- beta_fit$beta1
 
-  # If these are calculated elsewhere in your code, keep your existing values
-  prev_check <- prev
-  auc_check <- c
-
   # Create output directory
   dir.create("results", recursive = TRUE, showWarnings = FALSE)
 
@@ -65,16 +61,15 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
     .errorhandling = "pass"
   ) %dopar% {
 
-    perform_s2(
+    perform(
       i = i,
       ndev = ndev,
       n.para = n.para,
-      n.true = sum(weights != 0),
       beta0 = beta0,
       beta = beta,
       nval = nval,
-      prev = prev_check,
-      auc = auc_check,
+      prev = prev,
+      auc = auc,
       n.restrict = n.restrict
     )
   }
@@ -88,18 +83,17 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
   return(result_ndev)
 }
 
+result1_n <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev, output_name = "result1_n.csv", NULL)
+result1_3n_4 <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev1, output_name = "result1_3n_4.csv", 22)
+result1_n_2 <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev2, output_name = "result1_n_2.csv", 15)
+result1_n_4 <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev3, output_name = "result1_n_4.csv", 8)
 
-sim1 <- run_simulation(c(0.1, 0.2, 0.2, 0.5))
-sim3 <- run_simulation(c(0.5, 0, 0, 0.5))
-sim4 <- run_simulation(c(0.2, 0.4, 0.4, 0))
+result3_n <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev, output_name = "result3_n.csv", NULL)
+result3_3n_4 <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev1, output_name = "result3_3n_4.csv", 22)
+result3_n_2 <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev2, output_name = "result3_n_2.csv", 15)
+result3_n_4 <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev3, output_name = "result3_n_4.csv", 8)
 
-write.csv(sim1$result,  "sim1_result.csv",  row.names = FALSE)
-write.csv(sim1$result1, "sim1_result1.csv", row.names = FALSE)
-write.csv(sim1$result2, "sim1_result2.csv", row.names = FALSE)
-write.csv(sim3$result,  "sim3_result.csv",  row.names = FALSE)
-write.csv(sim3$result1, "sim3_result1.csv", row.names = FALSE)
-write.csv(sim3$result2, "sim3_result2.csv", row.names = FALSE)
-write.csv(sim4$result,  "sim2_result.csv",  row.names = FALSE)
-write.csv(sim4$result1, "sim2_result1.csv", row.names = FALSE)
-write.csv(sim4$result2, "sim2_result2.csv", row.names = FALSE)
-
+result4_n <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev, output_name = "result4_n.csv", NULL)
+result4_3n_4 <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev1, output_name = "result4_3n_4.csv", 22)
+result4_n_2 <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev2, output_name = "result4_n_2.csv", 15)
+result4_n_4 <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev3, output_name = "result4_n_4.csv", 8)
