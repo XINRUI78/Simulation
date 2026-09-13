@@ -39,7 +39,6 @@ result_ndev <- foreach(
   .export = c(
     "berank",
     "lasso_exact",
-    "stepwise_pvalue",
     "unirank"
   ),
   .errorhandling = "pass"
