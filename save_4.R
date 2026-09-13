@@ -40,7 +40,6 @@ result_ndev <- foreach(
   .export = c(
     "berank",
     "lasso_exact",
-    "stepwise_pvalue",
     "unirank"
   ),
   .errorhandling = "pass"
@@ -50,7 +49,6 @@ result_ndev <- foreach(
     i = i,
     ndev = ndev2,
     n.para = n.para,
-    n.true = n.true,
     beta0 = beta0,
     beta = beta,
     nval = nval,
