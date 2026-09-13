@@ -50,7 +50,6 @@ result_ndev <- foreach(
     i = i,
     ndev = 2*ndev,
     n.para = n.para,
-    n.true = n.true,
     beta0 = beta0,
     beta = beta,
     nval = nval,
