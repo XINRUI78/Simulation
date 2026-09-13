@@ -8,7 +8,6 @@ source("method/backward_pvalue.R")
 source("method/berank.R")
 source("method/lasso_exact.R")
 source("method/mod_penal_ave_foreach.R")
-source("method/stepwise_pvalue.R")
 source("method/unilogit.R")
 source("method/unirank.R")
 
