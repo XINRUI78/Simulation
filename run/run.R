@@ -16,19 +16,6 @@ library(RcppNumerical)
 library(brglm2)
 library(samplesizedev)
 
-######### Set simulation parameters
-n.para <- 30
-prev <- 0.3
-c <- 0.8
-nval <- 10000
-
-#rss <- samplesizedev(outcome = "Binary", S = 0.9, phi = prev, c = c, p = n.para)
-#ndev <- rss$sim
-ndev <- 1505
-ndev1 <- round(ndev / 4 * 3)
-ndev2 <- round(ndev / 2)
-ndev3 <- round(ndev / 4)
-
 run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 30, prev = 0.3, c = 0.8, nval = 10000,
                            nrep = 1000, cores = 32) {
 
@@ -83,17 +70,4 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
   return(result_ndev)
 }
 
-result1_n <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev, output_name = "result1_n.csv", NULL)
-result1_3n_4 <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev1, output_name = "result1_3n_4.csv", 22)
-result1_n_2 <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev2, output_name = "result1_n_2.csv", 15)
-result1_n_4 <- run_simulation(percentage = c(0.1, 0.2, 0.2, 0.5), ndev3, output_name = "result1_n_4.csv", 8)
 
-result3_n <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev, output_name = "result3_n.csv", NULL)
-result3_3n_4 <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev1, output_name = "result3_3n_4.csv", 22)
-result3_n_2 <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev2, output_name = "result3_n_2.csv", 15)
-result3_n_4 <- run_simulation(percentage = c(0.5, 0, 0, 0.5), ndev3, output_name = "result3_n_4.csv", 8)
-
-result4_n <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev, output_name = "result4_n.csv", NULL)
-result4_3n_4 <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev1, output_name = "result4_3n_4.csv", 22)
-result4_n_2 <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev2, output_name = "result4_n_2.csv", 15)
-result4_n_4 <- run_simulation(percentage = c(0.2, 0.4, 0.4, 0), ndev3, output_name = "result4_n_4.csv", 8)
