@@ -9,7 +9,7 @@ source("method/lasso_exact.R")
 source("method/mod_penal_ave_foreach.R")
 source("method/unilogit.R")
 source("method/unirank.R")
-source("run/run.R")
+source("run/run_simulation.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
