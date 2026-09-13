@@ -31,8 +31,8 @@ opt_beta_s2 <- function(n.para, prev, c, weights) {
   # Generate predictors (X) from multivariate normal distribution
   n = 500000
   sigma <- diag(n.para)
-  sigma[1:n.para] <- 0.5
-  diag(sigma) <- 1
+  sigma[1:n.para, 1:n.para] <- 0.5
+  diag(sigma) <- 1  # Ensure variances remain 1
   # Generate data
   x <- rmvnorm(n, mean = rep(0, n.para), sigma = sigma)
   
