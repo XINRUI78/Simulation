@@ -56,7 +56,7 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
       beta = beta,
       nval = nval,
       prev = prev,
-      auc = auc,
+      auc = c,
       n.restrict = n.restrict
     )
   }
