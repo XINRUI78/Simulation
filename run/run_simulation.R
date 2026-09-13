@@ -44,7 +44,7 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
     i = seq_len(nrep),
     .combine = rbind,
     .packages = c("mvtnorm", "pROC", "glmnet"),
-    .export = c("berank", "lasso_exact", "unirank"),
+    .export = c("berank", "lasso_exact", "unirank", "perform"),
     .errorhandling = "pass"
   ) %dopar% {
 
