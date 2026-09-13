@@ -1,14 +1,3 @@
-# Source required scripts
-source("tool/generate_ss.R")
-source("tool/perform.R")
-source("tool/measures.R")
-source("tool/opt_beta.R")
-source("method/backward_pvalue.R")
-source("method/berank.R")
-source("method/lasso_exact.R")
-source("method/mod_penal_ave_foreach.R")
-source("method/unilogit.R")
-source("method/unirank.R")
 source("run/run_simulation.R")
 
 args <- commandArgs(trailingOnly = TRUE)
