@@ -1,7 +1,7 @@
 library(doParallel)
 library(foreach)
 
-perform <- function(i, ndev, n.para, n.true, beta0, beta, nval, prev, auc, n.restrict = NULL){
+perform <- function(i, ndev, n.para, beta0, beta, nval, prev, auc, n.restrict = NULL){
   
   
   set.seed(i)
