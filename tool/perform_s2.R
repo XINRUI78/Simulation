@@ -119,7 +119,7 @@ perform_s2 <- function(i, ndev, n.para, beta0, beta, nval, prev, auc, n.restrict
                                                                                                      method_result[10,] <- c(prev, auc, ndev, 9, safe_measures(yval, p_min_mle, p_true, method = 9, i = i), varsel_min, lambda_min)
                                                                                                      
                                                                                                      # method = 10 for LASSO lambda.1se and MLE
-                                                                                                     data.s2 <- as.data.frame(data.dev[, c(1, 1 + varsel_1se == 1), drop = FALSE])
+                                                                                                     data.s2 <- as.data.frame(data.dev[, c(1, 1 + which(varsel_1se == 1)), drop = FALSE])
 
                                                                                                      fit <- glm(y ~ ., data = data.s2, family = 'binomial')
                                                                                                      if (length(which(varsel_1se == 1)) == 0) {
@@ -154,7 +154,7 @@ perform_s2 <- function(i, ndev, n.para, beta0, beta, nval, prev, auc, n.restrict
   lasso_1se_back <- backward_pvalue(data.s2, "y", p_threshold) 
   varsel_lasso1se_back <- varsel_1se
   varsel_lasso1se_back[varsel_lasso1se_back == 1] <- lasso_1se_back$varsel_back
-   lasso1se_back_model <- lasso_1se_back$backmodel
+  lasso1se_back_model <- lasso_1se_back$backmodel
   lasso1se_back_eta <- as.matrix(cbind(1,xval[,varsel_lasso1se_back == 1]))%*%coef(lasso1se_back_model)
 }                                                                                                  
                                                                                                      lasso1se_back_p <- as.vector(1/(1+exp(-lasso1se_back_eta)))
