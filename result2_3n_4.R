@@ -36,7 +36,7 @@ result_ndev <- foreach(
     "pROC",
     "glmnet"
   ),
-     .export = c("backward_pvalue", "mod_penal_ave_foreach", "berank", "lasso_exact", "unirank", "unilogit", "perform_s2", "generate_ss", "measures","opt_beta","safe_measures"),
+     .export = c("backward_pvalue", "mod_penal_ave_foreach", "berank", "lasso_exact", "unirank", "unilogit", "perform_s2", "generate_ss_s2", "measures","opt_beta_s2","safe_measures"),
   .errorhandling = "pass"
 ) %dopar% {
   
