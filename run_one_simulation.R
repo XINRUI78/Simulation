@@ -28,6 +28,6 @@ result <- run_simulation(
   ndev = ndev,
   output_name = output_name,
   n.restrict = n_restrict,
-  prev = 0.1,
-  c = 0.7
+  prev = 0.3,
+  c = 0.8
 )
