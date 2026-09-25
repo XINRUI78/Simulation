@@ -119,9 +119,15 @@ perform <- function(i, ndev, n.para, beta0, beta, nval, prev, auc, n.restrict = 
   method_result[10,] <- c(prev, auc, ndev, 9, safe_measures(yval, p_min_mle, p_true, method = 9, i = i), varsel_min, lambda_min)
   
   # method = 10 for LASSO lambda.1se and MLE
-  data.s2 <- data.dev[, c(1, 1 + which(varsel_1se == 1))]
-  fit <- glm(y ~ ., data = data.s2, family = 'binomial')
+  data.s2 <- as.data.frame(data.dev[, c(1, 1 + which(varsel_1se == 1)), drop = FALSE])
+
+fit <- glm(y ~ ., data = data.s2, family = binomial())
+
+if (length(which(varsel_1se == 1)) == 0) {
+  eta_1se_mle <- rep(coef(fit)[1], nrow(xval))
+} else {
   eta_1se_mle <- as.matrix(cbind(1,xval[, varsel_1se == 1]))%*%coef(fit)
+}
   p_1se_mle <- as.vector(1/(1+exp(-eta_1se_mle)))
   method_result[11,] <- c(prev, auc, ndev, 10, safe_measures(yval, p_1se_mle, p_true, method = 10, i = i), varsel_1se, lambda_1se)
   
@@ -140,14 +146,20 @@ perform <- function(i, ndev, n.para, beta0, beta, nval, prev, auc, n.restrict = 
   
   # method = 12 for LASSO lambda.1se and backward elimination (p < 0.05)
   p_threshold = 0.05
-  data.s2 <- data.dev[, c(1, 1 + which(varsel_1se == 1))]
+   data.s2 <- as.data.frame(data.dev[, c(1, 1 + which(varsel_1se == 1)), drop = FALSE])
+
+fit <- glm(y ~ ., data = data.s2, family = binomial())
+
+if (length(which(varsel_1se == 1)) == 0) {
+  lasso1se_back_eta <- rep(coef(fit)[1], nrow(xval))
+  varsel_lasso1se_back = varsel_1se
+} else {
   lasso_1se_back <- backward_pvalue(data.s2, "y", p_threshold) 
-  
   varsel_lasso1se_back <- varsel_1se
   varsel_lasso1se_back[varsel_lasso1se_back == 1] <- lasso_1se_back$varsel_back
-  
-  lasso1se_back_model <- lasso_1se_back$backmodel
+   lasso1se_back_model <- lasso_1se_back$backmodel
   lasso1se_back_eta <- as.matrix(cbind(1,xval[,varsel_lasso1se_back == 1]))%*%coef(lasso1se_back_model)
+}
   lasso1se_back_p <- as.vector(1/(1+exp(-lasso1se_back_eta)))
   method_result[13, ] <- c(prev, auc, ndev, 12, safe_measures(yval, lasso1se_back_p, p_true, method = 12, i = i), varsel_lasso1se_back, lambda_1se)
   
