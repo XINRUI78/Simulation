@@ -119,9 +119,14 @@ perform_s2 <- function(i, ndev, n.para, beta0, beta, nval, prev, auc, n.restrict
                                                                                                      method_result[10,] <- c(prev, auc, ndev, 9, safe_measures(yval, p_min_mle, p_true, method = 9, i = i), varsel_min, lambda_min)
                                                                                                      
                                                                                                      # method = 10 for LASSO lambda.1se and MLE
-                                                                                                     data.s2 <- data.dev[, c(1, 1 + which(varsel_1se == 1))]
+                                                                                                     data.s2 <- as.data.frame(data.dev[, c(1, 1 + varsel_1se == 1), drop = FALSE])
+
                                                                                                      fit <- glm(y ~ ., data = data.s2, family = 'binomial')
+                                                                                                     if (length(which(varsel_1se == 1)) == 0) {
+                                                                                                     eta_1se_mle <- rep(coef(fit)[1], nrow(xval))
+                                                                                                     } else {
                                                                                                      eta_1se_mle <- as.matrix(cbind(1,xval[, varsel_1se == 1]))%*%coef(fit)
+                                                                                                     }
                                                                                                      p_1se_mle <- as.vector(1/(1+exp(-eta_1se_mle)))
                                                                                                      method_result[11,] <- c(prev, auc, ndev, 10, safe_measures(yval, p_1se_mle, p_true, method = 10, i = i), varsel_1se, lambda_1se)
                                                                                                      
