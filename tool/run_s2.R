@@ -1,8 +1,10 @@
 # Set simulation parameters
 n.para <- 30
 n.true <- 15
-prev <- 0.3
-c <- 0.8
+#prev <- 0.3
+#c <- 0.8
+prev <- 0.1
+c <- 0.7
 nval <- 10000
 percentage <- c(0.1, 0.2, 0.2, 0.5)
 
