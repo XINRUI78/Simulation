@@ -22,7 +22,8 @@ weights <- c(rep(1, strong), rep(0.5, medium), rep(0.25, weak), rep(0, noise))
 
 #rss <- samplesizedev(outcome = "Binary", S = 0.9, phi = prev, c = c, p = n.para)
 #ndev <- rss$sim # recommended sample size
-ndev0 <- 1505
+#ndev0 <- 1505
+ndev = 6184
 ndev1 <- round(ndev0/2) # half the recommended sample size
 ndev2 <- round(ndev0/4) # one-quarter recommended sample size
 ndev3 <- round(3*ndev0/4) # 3/4 recommended sample size
