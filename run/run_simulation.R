@@ -64,7 +64,7 @@ run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 3
   parallel::stopCluster(cl)
 
   # Save CSV
-  output_csv <- file.path("results_0.3_0.8", output_name)
+  output_csv <- file.path("results", output_name)
   write.csv(result_ndev, file = output_csv, row.names = FALSE)
 
   return(result_ndev)
