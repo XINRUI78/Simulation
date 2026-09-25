@@ -3,12 +3,10 @@ source("tool/generate_ss_s2.R")
 source("tool/perform_s2.R")
 source("tool/measures.R")
 source("tool/run_s2.R")
-source("method/back_logit.R")
 source("method/backward_pvalue.R")
 source("method/berank.R")
 source("method/lasso_exact.R")
 source("method/mod_penal_ave_foreach.R")
-source("method/stepwise_pvalue.R")
 source("method/unilogit.R")
 source("method/unirank.R")
 
@@ -63,18 +61,6 @@ parallel::stopCluster(cl)
 
 
 # Save result
-output_file <- file.path(
-  "results",
-  "result_2n_all5.rds")
-
-
-saveRDS(
-  result_ndev,
-  file = output_file,
-  compress = TRUE
-)
-
-
 output_csv <- file.path(
   "results",
   "result2_2n.csv"
