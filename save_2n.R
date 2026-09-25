@@ -62,7 +62,7 @@ parallel::stopCluster(cl)
 
 # Save result
 output_csv <- file.path(
-  "results",
+  "results_0.3_0.8",
   "result2_2n.csv"
 )
 
