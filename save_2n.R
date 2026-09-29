@@ -41,7 +41,7 @@ result_ndev <- foreach(
   
   perform_s2(
     i = i,
-    ndev = 2*ndev,
+    ndev = 2*ndev0,
     n.para = n.para,
     beta0 = beta0,
     beta = beta,
