@@ -66,12 +66,7 @@ order_2n <- as.numeric(unlist(order_2n))
 order_n <- as.numeric(unlist(order_n))
 order_n_2 <- as.numeric(unlist(order_n_2))
 order_n_4 <- as.numeric(unlist(order_n_4))
-gusto_2n <- gusto_cut[order_2n,]
-write.csv(gusto_2n, "gusto_2n.csv", row.names = FALSE)
-gusto_n <- gusto_cut[order_n,]
-write.csv(gusto_n, "gusto_n.csv", row.names = FALSE)
-gusto_n_2 <- gusto_cut[order_n_2,]
-write.csv(gusto_n_2, "gusto_n_2.csv", row.names = FALSE)
-gusto_n_4 <- gusto_cut[order_n_4,]
-write.csv(gusto_n_4, "gusto_n_4.csv", row.names = FALSE)
-########################
+ex_n <- perform_gusto(order_n, gusto_cut, n.para)
+ex_n_2 <- perform_gusto(order_n_2, gusto_cut, n.para, n.restrict = 15)
+ex_n_4 <- perform_gusto(order_n_4, gusto_cut, n.para, n.restrict = 8)
+ex_2n <- perform_gusto(order_2n, gusto_cut, n.para)
