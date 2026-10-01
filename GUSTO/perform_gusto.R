@@ -1,8 +1,8 @@
 library(doParallel)
 library(foreach)
 
-perform <- function(order, data, n.para, n.restrict = NULL,
-                    thresholds = seq(0.01, 0.50, by = 0.005)) {
+perform_gusto <- function(order, data, n.para, n.restrict = NULL,
+                    thresholds = seq(0.01, 0.50, by = 0.01)) {
   
   ndev <- length(order)
   
