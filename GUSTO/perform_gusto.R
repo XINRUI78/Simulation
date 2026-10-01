@@ -13,7 +13,7 @@ perform_gusto <- function(order, data, n.para, n.restrict = NULL,
   
   # Validation dataset
   data.val <- data[-order, ]
-  xval <- data.val[, -1]
+  
   yval <- data.val[, 1]
   
   ##########################################################
@@ -35,6 +35,7 @@ perform_gusto <- function(order, data, n.para, n.restrict = NULL,
   ##########################################################
   
   fit <- glm(y ~ ., data = data.dev, family = "binomial")
+  xval <- model.matrix(fit, data = data.val)[,-1]
   eta_val <- as.matrix(cbind(1, xval)) %*% coef(fit)
   p_val <- as.vector(1 / (1 + exp(-eta_val)))
   
