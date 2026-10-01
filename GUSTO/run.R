@@ -1,8 +1,8 @@
 # Source required scripts
 
-source("GUSTO/perform_gusto.R")
-source("GUSTO/measures.R")
-source("GUSTO/calc_net_benefit.R")
+source("perform_gusto.R")
+source("measures.R")
+source("calc_net_benefit.R")
 source("method/backward_pvalue.R")
 source("method/berank.R")
 source("method/lasso_exact.R")
