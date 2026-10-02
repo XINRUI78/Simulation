@@ -3,7 +3,7 @@
 source("perform_gusto.R")
 source("measures.R")
 source("calc_net_benefit.R")
-source("../method/backward_pvalue.R")
+source("backward_pvalue.R")
 source("../method/berank.R")
 source("../method/lasso_exact.R")
 source("../method/mod_penal_ave_foreach.R")
