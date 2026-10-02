@@ -27,6 +27,15 @@ vars <- c("day30", "age", "sysbp", "Killip", "pulse", "miloc", "pmi",
           "prevcabg", "prevcvd", "tx", "htn", "sex", "pan")
 gusto_cut <- gusto[, vars]
 colnames(gusto_cut)[1] <- "y"
+gusto_cut[] <- lapply(gusto_cut, function(x) {
+  if (inherits(x, "labelled") && is.factor(x)) {
+    factor(x)
+  } else if (inherits(x, "labelled")) {
+    as.numeric(x)
+  } else {
+    x
+  }
+})
 ##########sample size
 fit_all <- lrm(y ~ ., data = gusto_cut)
 c = 0.823
