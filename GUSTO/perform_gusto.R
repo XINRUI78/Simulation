@@ -493,7 +493,6 @@ perform_gusto <- function(order, data, n.para, n.restrict = NULL,
   prevalence_val <- mean(yval)
   
   nb_list[["Treat_all"]] <- data.frame(
-    simulation = simulation,
     method = "Treat_all",
     threshold = thresholds,
     net_benefit = prevalence_val -
@@ -501,7 +500,6 @@ perform_gusto <- function(order, data, n.para, n.restrict = NULL,
   )
   
   nb_list[["Treat_none"]] <- data.frame(
-    simulation = simulation,
     method = "Treat_none",
     threshold = thresholds,
     net_benefit = 0
