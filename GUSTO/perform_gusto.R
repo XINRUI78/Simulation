@@ -424,7 +424,7 @@ perform_gusto <- function(order, data, n.para, n.restrict = NULL,
   if (!is.null(n.restrict)) {
     
     # Method 14: Univariable ranking
-    unirank_result <- unirank(as.matrix(x), y, n.restrict)
+    unirank_result <- unirank(x, y, n.restrict)
     varsel_uni <- unirank_result$varsel_uni
     unimodel <- unirank_result$model
     
@@ -445,7 +445,7 @@ perform_gusto <- function(order, data, n.para, n.restrict = NULL,
     
     
     # Method 15: Backward elimination ranking
-    berank_result <- berank(as.matrix(x), y, n.restrict)
+    berank_result <- berank(x, y, n.restrict)
     varsel_be <- berank_result$varsel_be
     bemodel <- berank_result$model
     
