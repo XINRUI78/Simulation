@@ -33,8 +33,8 @@ order_n_2 <- as.numeric(unlist(order_n_2))
 order_n_4 <- as.numeric(unlist(order_n_4))
 
 ex_n <- perform_gusto(order_n, gusto_cut, n.para)
-ex_n_2 <- perform_gusto(order_n_2, gusto_cut, n.para, n.restrict = 15)
-ex_n_4 <- perform_gusto(order_n_4, gusto_cut, n.para, n.restrict = 8)
+ex_n_2 <- perform_gusto(order_n_2, gusto_cut, n.para)
+ex_n_4 <- perform_gusto(order_n_4, gusto_cut, n.para)
 ex_2n <- perform_gusto(order_2n, gusto_cut, n.para)
 
 # Save standard performance results
