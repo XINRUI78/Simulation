@@ -8,7 +8,7 @@ source("method/lasso_exact.R")
 source("method/mod_penal_ave_foreach.R")
 source("method/unilogit.R")
 source("method/unirank.R")
-source("run/run_simulation.R")
+source("tool/run.R")
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -23,7 +23,7 @@ if (n_restrict == "NULL") {
   n_restrict <- as.numeric(n_restrict)
 }
 
-result <- run_simulation(
+result <- run(
   percentage = percentage,
   ndev = ndev,
   output_name = output_name,
