@@ -16,7 +16,7 @@ library(RcppNumerical)
 library(brglm2)
 #library(samplesizedev)
 
-run_simulation <- function(percentage, output_name, ndev, n.restrict, n.para = 30, prev = 0.3, c = 0.8, nval = 10000,
+run <- function(percentage, output_name, ndev, n.restrict, n.para = 30, prev = 0.3, c = 0.8, nval = 10000,
                            nrep = 1000, cores = 32) {
 
   # Predictor strengths
