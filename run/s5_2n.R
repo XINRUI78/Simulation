@@ -45,7 +45,7 @@ result_ndev <- foreach(
     n.para = n.para,
     beta0 = beta0,
     beta = beta,
-    sigma = sigma
+    sigma = sigma,
     nval = nval,
     prev = prev_check,
     auc = auc_check
