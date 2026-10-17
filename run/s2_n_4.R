@@ -1,14 +1,14 @@
 # Source required scripts
-source("tool/generate_ss_s2.R")
-source("tool/perform_s2.R")
-source("tool/measures.R")
-source("tool/run_s2.R")
-source("method/backward_pvalue.R")
-source("method/berank.R")
-source("method/lasso_exact.R")
-source("method/mod_penal_ave_foreach.R")
-source("method/unilogit.R")
-source("method/unirank.R")
+source("../tool/generate_ss_cor.R")
+source("../tool/perform_cor.R")
+source("../tool/measures.R")
+source("run_s2.R")
+source("../method/backward_pvalue.R")
+source("../method/berank.R")
+source("../method/lasso_exact.R")
+source("../method/mod_penal_ave_foreach.R")
+source("../method/unilogit.R")
+source("../method/unirank.R")
 
 library(doParallel)
 library(foreach)
@@ -35,16 +35,17 @@ result_ndev <- foreach(
     "pROC",
     "glmnet"
   ),
-     .export = c("backward_pvalue", "mod_penal_ave_foreach", "berank", "lasso_exact", "unirank", "unilogit", "perform_s2", "generate_ss_s2", "measures","opt_beta_s2","safe_measures"),
+  .export = c("backward_pvalue", "mod_penal_ave_foreach", "berank", "lasso_exact", "unirank", "unilogit", "perform_cor", "generate_ss_cor", "measures","opt_beta_cor","safe_measures"),
   .errorhandling = "pass"
 ) %dopar% {
   
-  perform_s2(
+  perform_cor(
     i = i,
     ndev = ndev2,
     n.para = n.para,
     beta0 = beta0,
     beta = beta,
+    sigma = sigma,
     nval = nval,
     prev = prev_check,
     auc = auc_check,
@@ -57,7 +58,6 @@ parallel::stopCluster(cl)
 
 
 # Save result
-
 output_csv <- file.path(
   "results",
   "result2_n_4.csv"
