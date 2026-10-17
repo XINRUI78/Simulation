@@ -1,0 +1,70 @@
+# Source required scripts
+source("../tool/generate_ss_cor.R")
+source("../tool/perform_cor.R")
+source("../tool/measures.R")
+source("run_s5.R")
+source("../method/backward_pvalue.R")
+source("../method/berank.R")
+source("../method/lasso_exact.R")
+source("../method/mod_penal_ave_foreach.R")
+source("../method/unilogit.R")
+source("../method/unirank.R")
+
+library(doParallel)
+library(foreach)
+
+
+
+# Create output directory
+dir.create(
+  "results",
+  recursive = TRUE,
+  showWarnings = FALSE
+)
+
+# Create parallel cluster
+cl <- parallel::makeCluster(32)
+doParallel::registerDoParallel(cl)
+
+# Run 1,000 repetitions
+result_ndev <- foreach(
+  i = seq_len(1000),
+  .combine = rbind,
+  .packages = c(
+    "mvtnorm",
+    "pROC",
+    "glmnet"
+  ),
+  .export = c("backward_pvalue", "mod_penal_ave_foreach", "berank", "lasso_exact", "unirank", "unilogit", "perform_cor", "generate_ss_cor", "measures","opt_beta_cor","safe_measures"),
+  .errorhandling = "pass"
+) %dopar% {
+  
+  perform_cor(
+    i = i,
+    ndev = ndev1,
+    n.para = n.para,
+    beta0 = beta0,
+    beta = beta,
+    sigma = sigma,
+    nval = nval,
+    prev = prev_check,
+    auc = auc_check,
+    n.restrict = 15
+  )
+}
+
+# Stop parallel cluster
+parallel::stopCluster(cl)
+
+
+# Save result
+output_csv <- file.path(
+  "results",
+  "result5_n_2.csv"
+)
+
+write.csv(
+  result_ndev,
+  file = output_csv,
+  row.names = FALSE
+)
