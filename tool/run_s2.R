@@ -1,11 +1,14 @@
 # Set simulation parameters
 n.para <- 30
 n.true <- 15
-#prev <- 0.3
-#c <- 0.8
-prev <- 0.1
-c <- 0.7
+prev <- 0.3
+c <- 0.8
 nval <- 10000
+
+sigma <- diag(n.para)
+sigma[1:n.para, 1:n.para] <- 0.5
+diag(sigma) <- 1  # Ensure variances remain 1
+
 percentage <- c(0.1, 0.2, 0.2, 0.5)
 
 # Define number of predictors with relative strengths
@@ -22,8 +25,8 @@ weights <- c(rep(1, strong), rep(0.5, medium), rep(0.25, weak), rep(0, noise))
 
 #rss <- samplesizedev(outcome = "Binary", S = 0.9, phi = prev, c = c, p = n.para)
 #ndev <- rss$sim # recommended sample size
-#ndev0 <- 1505
-ndev0 = 6184
+ndev0 <- 1505
+#ndev0 = 6184
 ndev1 <- round(ndev0/2) # half the recommended sample size
 ndev2 <- round(ndev0/4) # one-quarter recommended sample size
 ndev3 <- round(3*ndev0/4) # 3/4 recommended sample size
@@ -82,7 +85,7 @@ beta <- opt_beta$beta1
 # Generate a large dataset (200,000) using function generate_ss
   # Check prevalence and C-statistic; 
   n <- 200000; 
-  data <- generate_ss_s2(n, n.para, beta0, beta)
+  data <- generate_ss_cor(n, n.para, beta0, beta, sigma)
   prev_check <- round(mean(data[,1]),2)
   X <- as.matrix(data[,-1])
   eta <- rep(beta0, n) + X%*%beta
